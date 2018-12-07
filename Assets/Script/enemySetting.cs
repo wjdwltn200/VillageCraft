@@ -13,7 +13,6 @@ public class enemySetting : MonoBehaviour {
 
     List<GameObject> enemyObj;
     AddOption addOp;
-
     public GameObject enemyNum1;
 
     public Text num;

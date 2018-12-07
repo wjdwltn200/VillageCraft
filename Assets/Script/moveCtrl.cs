@@ -9,6 +9,9 @@ public class moveCtrl : MonoBehaviour {
     public float v;
     public bool isAtk = false;
 
+    public bool isMove = false;
+
+
     // Use this for initialization
     void Start () {
 		
@@ -19,6 +22,7 @@ public class moveCtrl : MonoBehaviour {
         h = Input.GetAxis("MoveInput");
         v = Input.GetAxis("Vertical");
         moveInputKey();
+        moveUp();
     }
 
     void moveInputKey()
@@ -27,5 +31,13 @@ public class moveCtrl : MonoBehaviour {
 
         transform.Translate(Vector3.forward * v * moveSpeed * Time.deltaTime);
         transform.Rotate(0, h * rotSpeed * Time.deltaTime, 0);
+    }
+
+    public void moveUp()
+    {
+        isMove = !isMove;
+
+        if (isMove)
+            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
     }
 }
