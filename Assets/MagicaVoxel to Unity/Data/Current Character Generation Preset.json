@@ -1,0 +1,104 @@
+﻿{
+    "Hip": {
+        "Name": "Hip",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "Spine": {
+        "Name": "Spine",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "Chest": {
+        "Name": "Chest",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "Neck": {
+        "Name": "Neck",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "Head": {
+        "Name": "Head",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "ArmUL": {
+        "Name": "ArmUL",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "ArmUR": {
+        "Name": "ArmUR",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "ArmDL": {
+        "Name": "ArmDL",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "ArmDR": {
+        "Name": "ArmDR",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "HandL": {
+        "Name": "HandL",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "HandR": {
+        "Name": "HandR",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "LegUL": {
+        "Name": "LegUL",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "LegUR": {
+        "Name": "LegUR",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "LegDL": {
+        "Name": "LegDL",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "LegDR": {
+        "Name": "LegDR",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "FootL": {
+        "Name": "FootL",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    },
+    "FootR": {
+        "Name": "FootR",
+        "SizeX": 14,
+        "SizeY": 42,
+        "SizeZ": 14
+    }
+}
