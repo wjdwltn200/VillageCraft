@@ -1,0 +1,11 @@
+{
+    "name": "UtilitiesAD",
+    "references": [
+        "TileSetAD",
+        "BuildingAD"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

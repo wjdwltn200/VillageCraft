@@ -36,7 +36,7 @@ public class enemySetting : MonoBehaviour {
 	void Update () {
 
         deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
-        float msec = deltaTime * 1000.0f;
+        //float msec = deltaTime * 1000.0f;
         float fps = 1.0f / deltaTime;
 
         num.text = "생성된 개수 : " + enemyObj.Count.ToString();
