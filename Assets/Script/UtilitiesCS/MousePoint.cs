@@ -19,9 +19,11 @@ public class MousePoint : MonoBehaviour {
 
     Vector3 hitPosition;
     private bool isButton = false;
-
+    private eBuildingType buildingType;
+    public int selectBuildingValue;
     void Update()
     {
+        selectBuilding();
         tileInfo();
     }
 
@@ -29,6 +31,15 @@ public class MousePoint : MonoBehaviour {
     {
         tileList = TileFloorGO.GetComponent<TileMapSetting>().listTileGo;
         tileSizeXY = TileFloorGO.GetComponent<TileMapSetting>().tileSizeXY;
+    }
+
+    void selectBuilding()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1)) selectBuildingValue = 0;
+        if (Input.GetKeyDown(KeyCode.Alpha2)) selectBuildingValue = 1;
+        if (Input.GetKeyDown(KeyCode.Alpha3)) selectBuildingValue = 2;
+        if (Input.GetKeyDown(KeyCode.Alpha4)) selectBuildingValue = 3;
+
     }
 
     void tileInfo()
@@ -49,8 +60,9 @@ public class MousePoint : MonoBehaviour {
                 if (hitPosition.x > 0.0f) pointX++;
 
                 tmepListGo = tileList[(pointZ + pointX * (tileSizeXY / 2))].listGo;
-                tempBuilding = GetComponent<BuildingSetting>().buildingGet(4);
+                tempBuilding = GetComponent<BuildingSetting>().buildingGet(selectBuildingValue);
                 tempBuilding.transform.position = tmepListGo.transform.position;
+
                 isButton = true;
             }
         }
@@ -58,10 +70,13 @@ public class MousePoint : MonoBehaviour {
         if (Input.GetMouseButtonUp(0) && isButton)
         {
             int tempBuildSizeX = tempBuilding.GetComponent<BuildingData>().sizeX;
-            int tempBuildSizeZ = tempBuilding.GetComponent<BuildingData>().sizeY;
+            int tempBuildSizeZ = tempBuilding.GetComponent<BuildingData>().sizeZ;
+            buildingType = tempBuilding.GetComponent<BuildingData>().ebuildingType;
 
             if (isBuildingCheck(tempBuildSizeX, tempBuildSizeZ))
             {
+                tmepListGo.transform.rotation = tempBuilding.transform.rotation;
+
                 Instantiate(tempBuilding, tmepListGo.transform.position, tmepListGo.transform.rotation, transform);
                 setBuildingCheck(tempBuildSizeX, tempBuildSizeZ);
             }
@@ -87,22 +102,72 @@ public class MousePoint : MonoBehaviour {
 
     void setBuildingCheck(int sizeX, int sizeZ)
     {
-        for (int x = -sizeX / 2; x < sizeX / 2 + 1; x++)
+        if (sizeX + sizeZ == 0)
         {
-            for (int z = -sizeZ / 2; z < sizeX / 2 + 1; z++)
+            tileList[(pointZ) + (pointX) * (tileSizeXY / 2)].isBuilding = true;
+            tileList[(pointZ) + (pointX) * (tileSizeXY / 2)].listGoType = buildingType;
+            Debug.Log("0,0 : " + tileList[(pointZ) + (pointX) * (tileSizeXY / 2)].listGoType);
+        }
+        else
+        {
+            for (int x = -sizeX; x < sizeX + 1; x++)
             {
-                if (!mapSizeCheck((pointX + x), (pointZ + z))) continue;
-
-                tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isBuilding = true;
+                for (int z = -sizeZ; z < sizeZ + 1; z++)
+                {
+                    tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isBuilding = true;
+                    tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].listGoType = buildingType;
+                    Debug.Log("0~,0~ : " + tileList[(pointZ) + (pointX) * (tileSizeXY / 2)].listGoType);
+                }
             }
         }
+
+        switch (tileList[(pointZ) + (pointX) * (tileSizeXY / 2)].listGoType)
+        {
+            case eBuildingType.NULL:
+                break;
+            case eBuildingType.WALL:
+                for (int z = -1; z < 2; z++)
+                {
+                    if (z == 0) continue;
+                    if (tileList[(pointZ + z) + (pointX) * (tileSizeXY / 2)].listGoType == eBuildingType.WALL)
+                    {
+                        Debug.Log("z 체크");
+
+                        GameObject tempSubObj = Instantiate(tempBuilding.GetComponent<BuildingData>().subObject, transform.position, transform.rotation, transform);
+                        tempSubObj.transform.position = tempBuilding.transform.position;
+                        tempSubObj.transform.Rotate(-90.0f, 0.0f, 90.0f, Space.World);
+                        tempSubObj.transform.Translate(0, 0, (float)z / 2, Space.World);
+
+                        //GameObject tempSubObj = tempBuilding.GetComponent<BuildingData>().subObject;
+                        //tempSubObj.transform.position = tempBuilding.transform.position;
+                        //tempSubObj.transform.Translate(0, 0, (float)z / 2, Space.World);
+                        //Instantiate(tempSubObj, tempSubObj.transform.position, tempSubObj.transform.rotation, transform);
+                    }
+                }
+
+                for (int x = -1; x < 2; x++)
+                {
+                    if (x == 0) continue;
+                    if (tileList[(pointZ) + (pointX + x) * (tileSizeXY / 2)].listGoType == eBuildingType.WALL)
+                    {
+                        Debug.Log("x 체크");
+
+                        GameObject tempSubObj = Instantiate(tempBuilding.GetComponent<BuildingData>().subObject, transform.position, transform.rotation, transform);
+                        tempSubObj.transform.position = tempBuilding.transform.position;
+                        tempSubObj.transform.Rotate(-90.0f, -90.0f, 90.0f, Space.World);
+                        tempSubObj.transform.Translate((float)x / 2, 0, 0, Space.World);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+
+        return;
     }
 
     bool mapSizeCheck(int sizeX, int sizeZ)
     {
-        Debug.Log("sizeX : " + sizeX);
-        Debug.Log("sizeZ : " + sizeZ);
-
         if (sizeX <= -1 || sizeX >= tileSizeXY / 2) return false;
         if (sizeZ <= -1 || sizeZ >= tileSizeXY / 2) return false;
 

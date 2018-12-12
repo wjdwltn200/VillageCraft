@@ -13,7 +13,7 @@ public class CameraCtrl : MonoBehaviour {
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
-    void Update()
+    private void LateUpdate()
     {
         moveInputKey();
     }
@@ -31,8 +31,18 @@ public class CameraCtrl : MonoBehaviour {
             tr.Translate(Vector3.back * moveSpeed * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.Z))
+        {
             cam.orthographicSize += 1.0f;
+            if (cam.orthographicSize > 10.0f)
+                cam.orthographicSize = 10.0f;
+
+        }
         if (Input.GetKey(KeyCode.X))
+        {
             cam.orthographicSize -= 1.0f;
+            if (cam.orthographicSize < 5.0f)
+                cam.orthographicSize = 5.0f;
+        }
+
     }
 }

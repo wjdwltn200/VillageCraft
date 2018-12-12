@@ -9,6 +9,8 @@ public class TileMapMgr : MonoBehaviour {
     private Transform tileGround;
     private TileMapSetting tileFloor;
 
+    private bool isMap = true;
+
     private void Awake()
     {
         // 타일 크기에 맞게 바닥 타일 지정
@@ -23,10 +25,11 @@ public class TileMapMgr : MonoBehaviour {
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (isMap)
         {
             tileFloor.tileCreate();
             tileColl = null;
+            isMap = false;
         }
     }
 }

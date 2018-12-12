@@ -1,6 +1,8 @@
 {
     "name": "TileSetAD",
-    "references": [],
+    "references": [
+        "BuildingAD"
+    ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
