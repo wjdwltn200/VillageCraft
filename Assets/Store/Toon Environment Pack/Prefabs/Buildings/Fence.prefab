@@ -11,10 +11,11 @@ GameObject:
   - component: {fileID: 3372964}
   - component: {fileID: 2385720}
   - component: {fileID: 6573098}
+  - component: {fileID: 54192666116778184}
   - component: {fileID: 114445510110746760}
   m_Layer: 0
   m_Name: Fence
-  m_TagString: Untagged
+  m_TagString: BUILDING
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -186,6 +187,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1489449685036954}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &54192666116778184
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146246}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!114 &114445510110746760
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -200,4 +216,6 @@ MonoBehaviour:
   sizeX: 0
   sizeZ: 0
   ebuildingType: 1
-  subObject: {fileID: 132102, guid: bd3cc03a5fe5ec0459267011451f14e8, type: 2}
+  subObject: {fileID: 1154255515504198, guid: 639dce1dfed84314680955fc050e52a3, type: 2}
+  maxHP: 10
+  currHP: 10

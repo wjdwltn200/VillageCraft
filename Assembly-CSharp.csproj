@@ -61,14 +61,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Animation\Warrior Pack Bundle 3 FREE\Code\IKHands.cs" />
+    <Compile Include="Assets\Animation\Warrior Pack Bundle 3 FREE\Code\SmoothFollow.cs" />
+    <Compile Include="Assets\Animation\Warrior Pack Bundle 3 FREE\Code\WarriorAnimationDemoFREE.cs" />
     <Compile Include="Assets\Script\animationState.cs" />
+    <Compile Include="Assets\Script\BuildingData.cs" />
+    <Compile Include="Assets\Script\BuildingSetting.cs" />
     <Compile Include="Assets\Script\CameraCtrl.cs" />
-    <Compile Include="Assets\Script\des.cs" />
     <Compile Include="Assets\Script\enemySetting.cs" />
-    <Compile Include="Assets\Script\fps.cs" />
-    <Compile Include="Assets\Script\monsNav.cs" />
+    <Compile Include="Assets\Script\MonsAI.cs" />
+    <Compile Include="Assets\Script\MousePoint.cs" />
     <Compile Include="Assets\Script\moveCtrl.cs" />
     <Compile Include="Assets\Script\moveKey.cs" />
+    <Compile Include="Assets\Script\TileMapMgr.cs" />
+    <Compile Include="Assets\Script\TileMapSetting.cs" />
     <Compile Include="Assets\Store\MagicaVoxel to Unity\Script\RectPacking\RectPaking.cs" />
     <Compile Include="Assets\Store\MagicaVoxel to Unity\Script\SavingSystem\RuntimeSaving.cs" />
     <Compile Include="Assets\Store\MagicaVoxel to Unity\Script\SavingSystem\Saving.cs" />
@@ -77,16 +83,16 @@
     <None Include="Assets\Store\Toon Environment Pack\www.meshtint.com.txt" />
     <None Include="Assets\Store\BOXOPHOBIC\Skybox Cubemap Extended\Shaders\Skybox Cubemap Extended.shader" />
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>C:/Users/5_KGA_1/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>C:/Users/wjdwltn/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/5_KGA_1/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/wjdwltn/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Users/5_KGA_1/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>C:/Users/wjdwltn/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/5_KGA_1/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/wjdwltn/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -284,10 +290,10 @@
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Analytics">
-      <HintPath>C:/Users/5_KGA_1/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.analytics@2.0.16/UnityEngine.Analytics.dll</HintPath>
+      <HintPath>C:/Users/wjdwltn/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.analytics@2.0.16/UnityEngine.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.StandardEvents">
-      <HintPath>C:/Users/5_KGA_1/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
+      <HintPath>C:/Users/wjdwltn/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/unity/mscorlib.dll</HintPath>
@@ -316,20 +322,6 @@
     <Reference Include="Boo.Lang">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/unity/Boo.Lang.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="BuildingAD.csproj">
-      <Project>{22CCE345-19E1-42F1-15F9-8CFC3A51DD0E}</Project>
-      <Name>BuildingAD</Name>
-    </ProjectReference>
-    <ProjectReference Include="TileSetAD.csproj">
-      <Project>{D21DB91D-7CD2-FC89-7AC2-BB672DE51EFB}</Project>
-      <Name>TileSetAD</Name>
-    </ProjectReference>
-    <ProjectReference Include="UtilitiesAD.csproj">
-      <Project>{1AF35F2E-9F9C-56DF-7CAC-95C62C86182B}</Project>
-      <Name>UtilitiesAD</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &463030
 Transform:
   m_ObjectHideFlags: 1
@@ -109,4 +109,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sizeX: 4
-  sizeY: 4
+  sizeZ: 0
+  ebuildingType: 0
+  subObject: {fileID: 0}

@@ -7,10 +7,14 @@ public class CameraCtrl : MonoBehaviour {
     private Transform tr;
     private Camera cam;
 
+    public float minSize;
+    public float maxSize;
+
     private void Start()
     {
         tr = GetComponent<Transform>();
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        cam.orthographicSize = minSize;
     }
 
     private void LateUpdate()
@@ -33,15 +37,15 @@ public class CameraCtrl : MonoBehaviour {
         if (Input.GetKey(KeyCode.Z))
         {
             cam.orthographicSize += 1.0f;
-            if (cam.orthographicSize > 10.0f)
-                cam.orthographicSize = 10.0f;
+            if (cam.orthographicSize > maxSize)
+                cam.orthographicSize = maxSize;
 
         }
         if (Input.GetKey(KeyCode.X))
         {
             cam.orthographicSize -= 1.0f;
-            if (cam.orthographicSize < 5.0f)
-                cam.orthographicSize = 5.0f;
+            if (cam.orthographicSize < minSize)
+                cam.orthographicSize = minSize;
         }
 
     }

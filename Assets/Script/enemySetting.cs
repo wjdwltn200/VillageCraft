@@ -56,9 +56,12 @@ public class enemySetting : MonoBehaviour {
             for (int j = 0; j < enemyMaxCount; j++)
             {
                 addOp.vPos.x += 1.0f;
-                enemyObj.Add(Instantiate(enemyNum1, addOp.vPos, addOp.qPos, transform));
+                enemyNum1.SetActive(true);
+                GameObject tempEnemy = Instantiate(enemyNum1, addOp.vPos, addOp.qPos, transform);
+                enemyObj.Add(tempEnemy);
             }
         }
+        enemyNum1.SetActive(false);
     }
 
     public void addUnit()
