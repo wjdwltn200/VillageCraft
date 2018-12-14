@@ -36,7 +36,6 @@ public class enemySetting : MonoBehaviour {
 	void Update () {
 
         deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
-        //float msec = deltaTime * 1000.0f;
         float fps = 1.0f / deltaTime;
 
         num.text = "생성된 개수 : " + enemyObj.Count.ToString();
@@ -51,11 +50,11 @@ public class enemySetting : MonoBehaviour {
 
         for (int i = 0; i < enemyMaxCount; i++)
         {
-            addOp.vPos.z += 1.0f;
+            addOp.vPos.z += 2.0f;
             addOp.vPos.x = 0.0f;
             for (int j = 0; j < enemyMaxCount; j++)
             {
-                addOp.vPos.x += 1.0f;
+                addOp.vPos.x += 2.0f;
                 enemyNum1.SetActive(true);
                 GameObject tempEnemy = Instantiate(enemyNum1, addOp.vPos, addOp.qPos, transform);
                 enemyObj.Add(tempEnemy);

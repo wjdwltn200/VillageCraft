@@ -18,9 +18,9 @@ TagManager:
   - PostProcessing
   - Enemey
   - TileMap
-  - 
-  - 
-  - 
+  - Building
+  - Player
+  - TileDeco
   - 
   - 
   - 

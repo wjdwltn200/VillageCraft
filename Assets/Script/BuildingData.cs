@@ -8,7 +8,8 @@ public enum eBuildingType
     WALL,
     FARM,
     WINDMILL,
-    WELL
+    WELL,
+    TOWER
 }
 
 public class BuildingData : MonoBehaviour {
@@ -25,6 +26,8 @@ public class BuildingData : MonoBehaviour {
 
     private TileMapSetting tileMapSet;
 
+    public float atkRange;
+
     private bool isDes = false;
 
     private void Awake()
@@ -35,6 +38,7 @@ public class BuildingData : MonoBehaviour {
     private void Start()
     {
         tileMapSet = GameObject.Find("TileFloor").GetComponent<TileMapSetting>();
+        typeSetting();
     }
 
     public void Des()
@@ -53,5 +57,27 @@ public class BuildingData : MonoBehaviour {
     {
         if (other.tag == "SUBWALL" && isDes)
             Destroy(other.gameObject);
+    }
+
+    private void typeSetting()
+    {
+        switch (ebuildingType)
+        {
+            case eBuildingType.NULL:
+                break;
+            case eBuildingType.WALL:
+                break;
+            case eBuildingType.FARM:
+                break;
+            case eBuildingType.WINDMILL:
+                break;
+            case eBuildingType.WELL:
+                break;
+            case eBuildingType.TOWER:
+                GetComponent<SphereCollider>().radius = atkRange;
+                break;
+            default:
+                break;
+        }
     }
 }

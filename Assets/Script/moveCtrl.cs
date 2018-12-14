@@ -5,19 +5,22 @@ using UnityEngine;
 public class moveCtrl : MonoBehaviour {
     public float moveSpeed;
     public float rotSpeed;
+    public float jumpPower;
+
     public float h;
     public float v;
 
     public bool isAtk;
-
     public Space tSpace;
 
-    // Use this for initialization
-    void Start () {
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    private Rigidbody Rg;
+
+    private void Awake()
+    {
+        Rg = GetComponent<Rigidbody>();
+    }
+
+    void Update () {
         h = Input.GetAxis("MoveInput");
         v = Input.GetAxis("Vertical");
         moveInputKey();
@@ -27,5 +30,12 @@ public class moveCtrl : MonoBehaviour {
     {
         transform.Translate(Vector3.forward * v * moveSpeed * Time.deltaTime, tSpace);
         transform.Rotate(0, h * rotSpeed * Time.deltaTime, 0, tSpace);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Rg.constraints = RigidbodyConstraints.None;
+            Rg.AddForce(Vector3.up * jumpPower, ForceMode.Force);
+            Rg.AddTorque(Vector3.right * 100.0f, ForceMode.Force);
+        }
     }
 }

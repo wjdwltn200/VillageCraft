@@ -11,14 +11,15 @@ GameObject:
   - component: {fileID: 3372142}
   - component: {fileID: 2323458}
   - component: {fileID: 6563612}
+  - component: {fileID: 54896264802662418}
   - component: {fileID: 114998273971207828}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Hut 01 Red
-  m_TagString: Untagged
+  m_TagString: BUILDING
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &448954
 Transform:
   m_ObjectHideFlags: 1
@@ -40,12 +41,12 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 125562}
   m_Enabled: 1
-  m_CastShadows: 0
+  m_CastShadows: 1
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 57bc853764116eb40ae9f13eab930f15, type: 2}
@@ -124,13 +125,13 @@ GameObject:
   - component: {fileID: 4775159391323678}
   - component: {fileID: 33449649860795554}
   - component: {fileID: 23423346122767018}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 18
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4775159391323678
 Transform:
   m_ObjectHideFlags: 1
@@ -186,6 +187,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1154063179352676}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &54896264802662418
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 125562}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!114 &114998273971207828
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -201,3 +217,7 @@ MonoBehaviour:
   sizeZ: 1
   ebuildingType: 2
   subObject: {fileID: 0}
+  maxHP: 10
+  currHP: 10
+  setTIleZ: 0
+  setTIleX: 0

@@ -26,18 +26,26 @@ public class MonsAI : MonoBehaviour {
 
     private Animator anim;
 
+    public float NavSpeedMax;
+    public float NavSpeedAcc;
+
+
     private void Awake()
     {
         nav = GetComponent<NavMeshAgent>();
         tr = GetComponent<Transform>();
         Rg = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+
+        // Nav 초기화
+        nav.speed = NavSpeedMax;
+        nav.acceleration = NavSpeedAcc;
     }
 
     void Start () {
         currState = State.Move;
         StartCoroutine(Act_Move());
-	}
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -45,20 +53,21 @@ public class MonsAI : MonoBehaviour {
         {
             currTarget = collision.gameObject;
             currData = currTarget.GetComponent<BuildingData>();
+            actionAI(State.Attack);
         }
     }
 
     void actionAI (State eMove)
     {
         currState = eMove;
-        if (!GetComponent<NavMeshAgent>().enabled)
-            GetComponent<NavMeshAgent>().enabled = true;
 
         Rg.constraints = RigidbodyConstraints.None;
         Rg.constraints = RigidbodyConstraints.FreezeRotation;
 
         anim.SetBool("isRun", false);
         anim.SetBool("isAtk", false);
+        Debug.Log("0. rot : " + tr.rotation.ToString());
+
 
         StopAllCoroutines();
         switch (currState)
@@ -67,7 +76,6 @@ public class MonsAI : MonoBehaviour {
                 StartCoroutine(Act_Move());
                 break;
             case State.Attack:
-                Debug.Log("0 : " + anim.GetBool("isAtk").ToString());
                 StartCoroutine(Act_Attack());
                 break;
             default:
@@ -77,7 +85,9 @@ public class MonsAI : MonoBehaviour {
 
     IEnumerator Act_Move()
     {
+        GetComponent<NavMeshAgent>().enabled = true;
         nav.SetDestination(target.transform.position);
+
         anim.SetBool("isRun", true);
 
         if (currTarget == null)
@@ -87,14 +97,14 @@ public class MonsAI : MonoBehaviour {
         {
             NextState = State.Attack;
         }
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(5.0f);
         actionAI(NextState);
     }
 
     IEnumerator Act_Attack()
     {
         if (!currTarget) yield return new WaitForSeconds(0.1f);
-
+        yield return new WaitForSeconds(0.1f);
 
         if (currData.currHP <= 0.0f)
         {
@@ -105,9 +115,11 @@ public class MonsAI : MonoBehaviour {
             NextState = State.Attack;
             Rg.constraints = RigidbodyConstraints.FreezeAll;
 
-            tr.LookAt(currTarget.transform);
+            Quaternion rot = Quaternion.LookRotation(currTarget.transform.position - tr.position);
+            rot.x = rot.z = 0.0f;
+            tr.rotation = Quaternion.Slerp(tr.rotation, rot, Time.deltaTime * 10.0f);
             anim.SetBool("isAtk", true);
-            Debug.Log("2 : "+anim.GetBool("isAtk").ToString());
+            Debug.Log("1. rot : " + tr.rotation.ToString());
 
             currData.currHP -= 1.0f;
             if (currData.currHP <= 0.0f)
@@ -115,7 +127,7 @@ public class MonsAI : MonoBehaviour {
         }
 
         GetComponent<NavMeshAgent>().enabled = false;
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
 
         actionAI(NextState);
     }

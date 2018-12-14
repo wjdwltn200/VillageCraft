@@ -59,8 +59,6 @@ public class MousePoint : MonoBehaviour {
                 if (hitPosition.z > 0.0f) pointZ++;
                 if (hitPosition.x > 0.0f) pointX++;
 
-                
-
                 tmepListGo = tileList[(pointZ + pointX * (tileSizeXY / 2))].listGo;
                 tempBuilding = GetComponent<BuildingSetting>().buildingGet(selectBuildingValue);
                 tempBuilding.transform.position = tmepListGo.transform.position;
