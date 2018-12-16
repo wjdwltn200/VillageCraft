@@ -20,7 +20,7 @@ public class TileMapMgr : MonoBehaviour {
         // 자식 스크립트 정보 받아오기
         tileFloor = GameObject.Find("TileFloor").GetComponent<TileMapSetting>();
         tileFloor.tileSizeXY = tileSizeXY;
-        tileFloor.tileGo = tileColl;
+        tileFloor.tempTileGo = tileColl;
     }
 
     private void Update()
@@ -28,7 +28,8 @@ public class TileMapMgr : MonoBehaviour {
         if (isMap)
         {
             tileFloor.tileCreate();
-            tileColl = null;
+            tileFloor.tileDecoCreate();
+            //tileColl = null;
             isMap = false;
         }
     }

@@ -10,12 +10,12 @@ GameObject:
   - component: {fileID: 414280}
   - component: {fileID: 3336324}
   - component: {fileID: 2390866}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Grass_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967294
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &414280
 Transform:
@@ -23,7 +23,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 104850}
-  m_LocalRotation: {x: -0.17564286, y: -0.684945, z: -0.684945, w: 0.17564286}
+  m_LocalRotation: {x: -0.5690979, y: 0.41967568, z: 0.41967568, w: 0.5690979}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

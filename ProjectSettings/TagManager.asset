@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BUILDING
   - SUBWALL
+  - TILEDECO
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - TileMap
   - Building
   - Player
-  - TileDeco
+  - 
   - 
   - 
   - 

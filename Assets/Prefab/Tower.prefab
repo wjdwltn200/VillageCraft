@@ -22,15 +22,16 @@ GameObject:
   - component: {fileID: 33627589138068176}
   - component: {fileID: 23639877245259218}
   - component: {fileID: 65416201924571878}
+  - component: {fileID: 135341988553481634}
   - component: {fileID: 54137881044564806}
   - component: {fileID: 114259956938366204}
-  - component: {fileID: 135341988553481634}
+  - component: {fileID: 114796877509515836}
   m_Layer: 11
   m_Name: Tower
   m_TagString: BUILDING
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 0
 --- !u!4 &4342581386916486
 Transform:
@@ -133,7 +134,22 @@ MonoBehaviour:
   currHP: 30
   setTIleZ: 0
   setTIleX: 0
-  atkRange: 5
+  atkPoint: 5
+  atkDelay: 0.1
+  atkRange: 10
+--- !u!114 &114796877509515836
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1655725945718758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80044cc3b34a8b2459b7988ec152fb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currTarget: {fileID: 0}
+  isOrigin: 1
 --- !u!135 &135341988553481634
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -14,8 +14,12 @@ public class MousePoint : MonoBehaviour {
     private int tileMapSize;
     private int pointX;
     private int pointZ;
+    private int tempBuildSizeX;
+    private int tempBuildSizeZ;
+
     private GameObject tmepListGo;
     private GameObject tempBuilding;
+    private BuildingData buildingData;
 
     Vector3 hitPosition;
     private bool isButton = false;
@@ -35,6 +39,8 @@ public class MousePoint : MonoBehaviour {
 
     void selectBuilding()
     {
+        if (isButton) return;
+
         if (Input.GetKeyDown(KeyCode.Alpha1)) selectBuildingValue = 0;
         if (Input.GetKeyDown(KeyCode.Alpha2)) selectBuildingValue = 1;
         if (Input.GetKeyDown(KeyCode.Alpha3)) selectBuildingValue = 2;
@@ -61,26 +67,33 @@ public class MousePoint : MonoBehaviour {
 
                 tmepListGo = tileList[(pointZ + pointX * (tileSizeXY / 2))].listGo;
                 tempBuilding = GetComponent<BuildingSetting>().buildingGet(selectBuildingValue);
-                tempBuilding.transform.position = tmepListGo.transform.position;
+                buildingData = tempBuilding.GetComponent<BuildingData>();
+                tempBuildSizeX = buildingData.sizeX;
+                tempBuildSizeZ = buildingData.sizeZ;
 
+                if (isBuildingCheck(tempBuildSizeX, tempBuildSizeZ, buildingData.ebuildingType))
+                {
+                    tempBuilding.transform.position = tmepListGo.transform.position;
+                }
                 isButton = true;
             }
         }
 
         if (Input.GetMouseButtonUp(0) && isButton)
         {
-            int tempBuildSizeX = tempBuilding.GetComponent<BuildingData>().sizeX;
-            int tempBuildSizeZ = tempBuilding.GetComponent<BuildingData>().sizeZ;
+
             tempBuilding.GetComponent<BuildingData>().setTIleZ = pointZ;
             tempBuilding.GetComponent<BuildingData>().setTIleX = pointX;
 
             buildingType = tempBuilding.GetComponent<BuildingData>().ebuildingType;
 
-            if (isBuildingCheck(tempBuildSizeX, tempBuildSizeZ))
+            if (isBuildingCheck(tempBuildSizeX, tempBuildSizeZ, buildingData.ebuildingType))
             {
                 tmepListGo.transform.rotation = tempBuilding.transform.rotation;
 
-                Instantiate(tempBuilding, tmepListGo.transform.position, tmepListGo.transform.rotation, transform);
+                GameObject tempBuildingInst = Instantiate(tempBuilding, tmepListGo.transform.position, tmepListGo.transform.rotation, transform);
+                tempBuildingInst.GetComponent<BuildingSys>().isOrigin = false;
+
                 setBuildingCheck(tempBuildSizeX, tempBuildSizeZ);
             }
             tempBuilding.SetActive(false);
@@ -88,18 +101,42 @@ public class MousePoint : MonoBehaviour {
         }
     }
 
-    bool isBuildingCheck(int sizeX, int sizeZ)
+    bool isBuildingCheck(int sizeX, int sizeZ, eBuildingType buildingType)
     {
-        for (int x = -sizeX / 2; x < sizeX / 2 + 1; x++)
+        switch (buildingType)
         {
-            for (int z = -sizeZ / 2; z < sizeX / 2 + 1; z++)
-            {
-                if (!mapSizeCheck((pointX + x), (pointZ + z))) return false;
+            case eBuildingType.WINDMILL:
+                sizeX += 2;
+                sizeZ += 2;
+                int tempFramPoint = 0;
+                for (int x = -sizeX / 2; x < sizeX / 2 + 1; x++)
+                {
+                    for (int z = -sizeZ / 2; z < sizeZ / 2 + 1; z++)
+                    {
+                        if (!mapSizeCheck((pointX + x), (pointZ + z))) return false;
 
-                if (tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isBuilding)
-                    return false;
-            }
+                        if (tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isBuilding) return false;
+                        if (tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isFarmland) tempFramPoint++;
+                    }
+                }
+
+                if (tempFramPoint < 3) return false;
+
+                break;
+            default:
+                for (int x = -sizeX / 2; x < sizeX / 2 + 1; x++)
+                {
+                    for (int z = -sizeZ / 2; z < sizeZ / 2 + 1; z++)
+                    {
+                        if (!mapSizeCheck((pointX + x), (pointZ + z))) return false;
+
+                        if (tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isBuilding)
+                            return false;
+                    }
+                }
+                break;
         }
+
         return true;
     }
 

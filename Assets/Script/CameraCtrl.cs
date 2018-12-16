@@ -14,7 +14,7 @@ public class CameraCtrl : MonoBehaviour {
     {
         tr = GetComponent<Transform>();
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        cam.orthographicSize = minSize;
+        cam.orthographicSize = maxSize / 2.0f;
     }
 
     private void LateUpdate()

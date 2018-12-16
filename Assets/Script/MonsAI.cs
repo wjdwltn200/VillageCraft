@@ -5,8 +5,10 @@ using UnityEngine.AI;
 
 public enum State
 {
+   Idle,
    Move,
-   Attack
+   Attack,
+   Tax
 }
 
 
@@ -29,6 +31,10 @@ public class MonsAI : MonoBehaviour {
     public float NavSpeedMax;
     public float NavSpeedAcc;
 
+    public float maxHp = 0.0f;
+    public float currHp = 0.0f;
+
+    public ParticleSystem DieEff;
 
     private void Awake()
     {
@@ -40,11 +46,22 @@ public class MonsAI : MonoBehaviour {
         // Nav 초기화
         nav.speed = NavSpeedMax;
         nav.acceleration = NavSpeedAcc;
+
+        // 능력치 초기화
+        currHp = maxHp;
     }
 
     void Start () {
+        Instantiate(DieEff, transform);
+
         currState = State.Move;
         StartCoroutine(Act_Move());
+    }
+
+    private void Update()
+    {
+        if (currHp <= 0.0f)
+            Die();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -57,6 +74,12 @@ public class MonsAI : MonoBehaviour {
         }
     }
 
+    public void Die()
+    {
+        StopAllCoroutines();
+        Destroy(gameObject);
+    }
+
     void actionAI (State eMove)
     {
         currState = eMove;
@@ -66,8 +89,6 @@ public class MonsAI : MonoBehaviour {
 
         anim.SetBool("isRun", false);
         anim.SetBool("isAtk", false);
-        Debug.Log("0. rot : " + tr.rotation.ToString());
-
 
         StopAllCoroutines();
         switch (currState)
@@ -103,7 +124,13 @@ public class MonsAI : MonoBehaviour {
 
     IEnumerator Act_Attack()
     {
-        if (!currTarget) yield return new WaitForSeconds(0.1f);
+        if (!currTarget)
+        {
+            NextState = State.Move;
+            actionAI(NextState);
+        }
+
+        // 애니메이션 대기
         yield return new WaitForSeconds(0.1f);
 
         if (currData.currHP <= 0.0f)
@@ -119,11 +146,13 @@ public class MonsAI : MonoBehaviour {
             rot.x = rot.z = 0.0f;
             tr.rotation = Quaternion.Slerp(tr.rotation, rot, Time.deltaTime * 10.0f);
             anim.SetBool("isAtk", true);
-            Debug.Log("1. rot : " + tr.rotation.ToString());
 
             currData.currHP -= 1.0f;
             if (currData.currHP <= 0.0f)
+            {
                 currData.Des();
+                currTarget = null;
+            }
         }
 
         GetComponent<NavMeshAgent>().enabled = false;
@@ -131,4 +160,6 @@ public class MonsAI : MonoBehaviour {
 
         actionAI(NextState);
     }
+
+
 }

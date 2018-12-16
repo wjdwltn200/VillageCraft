@@ -26,7 +26,12 @@ public class BuildingData : MonoBehaviour {
 
     private TileMapSetting tileMapSet;
 
-    public float atkRange;
+    public float atkPoint = 0.0f;
+    public float atkDelay = 0.0f;
+    public float atkRange = 0.0f;
+
+    public float taxPoint = 0.0f;
+    public float taxDelay = 0.0f;
 
     private bool isDes = false;
 

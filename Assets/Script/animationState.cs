@@ -9,10 +9,17 @@ public class animationState : MonoBehaviour {
     public float moveZ;
     public float moveY;
 
+    public float atkPoint;
+
+    public GameObject weapon;
+    private CapsuleCollider weaponColl;
+
     // Use this for initialization
     void Start () {
         anim = GetComponent<Animator>();
         moveCtrlCS = GetComponent<moveCtrl>();
+        weaponColl = weapon.GetComponent<CapsuleCollider>();
+        weaponColl.enabled = false;
     }
 	
 	// Update is called once per frame
@@ -25,6 +32,7 @@ public class animationState : MonoBehaviour {
     {
         if (moveCtrlCS.isAtk)
         {
+            weaponColl.enabled = true;
             anim.SetBool("isRun", false);
             anim.SetBool("isAtk", true);
             moveCtrlCS.isAtk = false;
@@ -36,6 +44,17 @@ public class animationState : MonoBehaviour {
 
     public void stopAtk()
     {
+        weaponColl.enabled = false;
         anim.SetBool("isAtk", false);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        GameObject tempGO = other.gameObject;
+        if (tempGO.layer == 9)
+        {
+            tempGO.GetComponent<MonsAI>().currHp -= atkPoint;
+            Debug.Log("공격");
+        }
     }
 }

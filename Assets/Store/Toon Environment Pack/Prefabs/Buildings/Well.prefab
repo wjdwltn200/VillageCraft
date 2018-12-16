@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 65323723086926878}
   - component: {fileID: 54315817510147650}
   - component: {fileID: 114520422191706254}
+  - component: {fileID: 114299883667206846}
   m_Layer: 11
   m_Name: Well
   m_TagString: BUILDING
@@ -190,6 +191,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5593445, y: 1.6817542, z: 1.5849565}
   m_Center: {x: -0.009804398, y: -0.015049517, z: 0.79247826}
+--- !u!114 &114299883667206846
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 117880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80044cc3b34a8b2459b7988ec152fb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currTarget: {fileID: 0}
+  isOrigin: 1
 --- !u!114 &114520422191706254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -209,3 +223,6 @@ MonoBehaviour:
   currHP: 5
   setTIleZ: 0
   setTIleX: 0
+  atkPoint: 0
+  atkDelay: 0
+  atkRange: 0

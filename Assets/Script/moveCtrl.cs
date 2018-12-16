@@ -33,9 +33,11 @@ public class moveCtrl : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Rg.constraints = RigidbodyConstraints.None;
-            Rg.AddForce(Vector3.up * jumpPower, ForceMode.Force);
-            Rg.AddTorque(Vector3.right * 100.0f, ForceMode.Force);
+            isAtk = true;
         }
+
+        //Rg.constraints = RigidbodyConstraints.None;
+        //Rg.AddForce(Vector3.up * jumpPower, ForceMode.Force);
+        //Rg.AddTorque(Vector3.right * 100.0f, ForceMode.Force);
     }
 }
