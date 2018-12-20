@@ -205,10 +205,10 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.9209486
+      - time: 0.51077914
         functionName: stopAtk
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 4d06c2c6ab94a3b4197c6241d5a1dbcb,
+        objectReferenceParameter: {fileID: 11500000, guid: db5539cab6611c54e8de414a99a59716,
           type: 3}
         floatParameter: 0
         intParameter: 0

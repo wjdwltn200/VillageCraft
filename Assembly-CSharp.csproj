@@ -65,11 +65,18 @@
     <Compile Include="Assets\Animation\Warrior Pack Bundle 3 FREE\Code\SmoothFollow.cs" />
     <Compile Include="Assets\Animation\Warrior Pack Bundle 3 FREE\Code\WarriorAnimationDemoFREE.cs" />
     <Compile Include="Assets\Script\animationState.cs" />
+    <Compile Include="Assets\Script\BuildingCraftingUI.cs" />
     <Compile Include="Assets\Script\BuildingData.cs" />
+    <Compile Include="Assets\Script\buildingInfoView.cs" />
+    <Compile Include="Assets\Script\buildingListData.cs" />
     <Compile Include="Assets\Script\BuildingSetting.cs" />
     <Compile Include="Assets\Script\BuildingSys.cs" />
+    <Compile Include="Assets\Script\bulletMgr.cs" />
+    <Compile Include="Assets\Script\bulletSys.cs" />
     <Compile Include="Assets\Script\CameraCtrl.cs" />
+    <Compile Include="Assets\Script\damageSys.cs" />
     <Compile Include="Assets\Script\enemySetting.cs" />
+    <Compile Include="Assets\Script\HeroAI.cs" />
     <Compile Include="Assets\Script\MonsAI.cs" />
     <Compile Include="Assets\Script\MousePoint.cs" />
     <Compile Include="Assets\Script\moveCtrl.cs" />
@@ -77,30 +84,33 @@
     <Compile Include="Assets\Script\PlayerData.cs" />
     <Compile Include="Assets\Script\TileMapMgr.cs" />
     <Compile Include="Assets\Script\TileMapSetting.cs" />
+    <Compile Include="Assets\Script\UIMgr.cs" />
     <Compile Include="Assets\Store\LowPoly Particles\Demo\Scripts\CameraRotate.cs" />
     <Compile Include="Assets\Store\LowPoly Particles\Demo\Scripts\Demo.cs" />
     <Compile Include="Assets\Store\LowPoly Particles\Demo\Scripts\UIEventHandler.cs" />
     <Compile Include="Assets\Store\MagicaVoxel to Unity\Script\RectPacking\RectPaking.cs" />
     <Compile Include="Assets\Store\MagicaVoxel to Unity\Script\SavingSystem\RuntimeSaving.cs" />
     <Compile Include="Assets\Store\MagicaVoxel to Unity\Script\SavingSystem\Saving.cs" />
+    <Compile Include="Assets\Store\Simple UI\Samples\IconPreview.cs" />
     <None Include="Assets\Store\MagicaVoxel to Unity\Script\Shader\Voxel.shader" />
     <None Include="Assets\Store\LowPoly Particles\Resources\BaseColor.shader" />
     <None Include="Assets\Store\Toon Environment Pack\Read me.txt" />
+    <None Include="Assets\Store\Simple UI\Fonts\OFL.txt" />
     <None Include="Assets\Store\Toon Environment Pack\www.meshtint.com.txt" />
     <None Include="Assets\Store\LowPoly Particles\ReadMe.txt" />
     <None Include="Assets\Store\BOXOPHOBIC\Skybox Cubemap Extended\Shaders\Skybox Cubemap Extended.shader" />
     <None Include="Assets\Store\LowPoly Particles\Resources\BaseAdditive.shader" />
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>C:/Users/wjdwltn/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>C:/Users/5_KGA_1/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/wjdwltn/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/5_KGA_1/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Users/wjdwltn/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>C:/Users/5_KGA_1/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/wjdwltn/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/5_KGA_1/Documents/GitHub/VillageCraft/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -298,10 +308,10 @@
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Analytics">
-      <HintPath>C:/Users/wjdwltn/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.analytics@2.0.16/UnityEngine.Analytics.dll</HintPath>
+      <HintPath>C:/Users/5_KGA_1/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.analytics@2.0.16/UnityEngine.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.StandardEvents">
-      <HintPath>C:/Users/wjdwltn/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
+      <HintPath>C:/Users/5_KGA_1/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/unity/mscorlib.dll</HintPath>

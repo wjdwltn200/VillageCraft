@@ -18,26 +18,35 @@ public class BuildingData : MonoBehaviour {
     public int sizeZ;
     public eBuildingType ebuildingType;
     public GameObject subObject;
-    public float maxHP;
-    public float currHP;
 
-    public int setTIleZ;
-    public int setTIleX;
+    private int setTIleZ;
+    private int setTIleX;
 
     private TileMapSetting tileMapSet;
+    public string _name = "-";
+    public float _maxHP;
+    public float _currHP;
+    public float _atkPoint = 0.0f;
+    public float _atkDelay = 0.0f;
+    public float _atkRange = 0.0f;
+    public float _rangeRadius = 0.0f;
 
-    public float atkPoint = 0.0f;
-    public float atkDelay = 0.0f;
-    public float atkRange = 0.0f;
+    public float _taxPoint = 0.0f;
+    public float _taxDelay = 0.0f;
 
-    public float taxPoint = 0.0f;
-    public float taxDelay = 0.0f;
+    public float _buyPrice = 0.0f;
 
     private bool isDes = false;
 
+    public void setTileXZ (int setX, int setZ)
+    {
+        setTIleX = setX;
+        setTIleZ = setZ;
+    }
+
     private void Awake()
     {
-        currHP = maxHP;
+        _currHP = _maxHP;
     }
 
     private void Start()
@@ -46,9 +55,14 @@ public class BuildingData : MonoBehaviour {
         typeSetting();
     }
 
+    private void LateUpdate()
+    {
+        Des();
+    }
+
     public void Des()
     {
-        if (currHP <= 0.0f)
+        if (_currHP <= 0.0f)
         {
             isDes = true;
             tileMapSet.listTileGo[(setTIleZ + setTIleX * (tileMapSet.tileSizeXY / 2))].isBuilding = false;
@@ -79,7 +93,7 @@ public class BuildingData : MonoBehaviour {
             case eBuildingType.WELL:
                 break;
             case eBuildingType.TOWER:
-                GetComponent<SphereCollider>().radius = atkRange;
+                GetComponent<SphereCollider>().radius = _atkRange;
                 break;
             default:
                 break;

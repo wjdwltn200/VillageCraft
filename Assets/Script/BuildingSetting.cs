@@ -11,4 +11,9 @@ public class BuildingSetting : MonoBehaviour {
 
         return buildingList[build];
     }
+
+    public BuildingData getDate (int value)
+    {
+        return buildingList[value].GetComponent<BuildingData>();
+    }
 }

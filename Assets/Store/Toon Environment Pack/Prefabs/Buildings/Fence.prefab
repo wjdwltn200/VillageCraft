@@ -14,12 +14,13 @@ GameObject:
   - component: {fileID: 54192666116778184}
   - component: {fileID: 114445510110746760}
   - component: {fileID: 114547908881775778}
+  - component: {fileID: 114592757663693132}
   m_Layer: 11
   m_Name: Fence
   m_TagString: BUILDING
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 119
   m_IsActive: 0
 --- !u!4 &481740
 Transform:
@@ -218,13 +219,16 @@ MonoBehaviour:
   sizeZ: 0
   ebuildingType: 1
   subObject: {fileID: 1154255515504198, guid: 639dce1dfed84314680955fc050e52a3, type: 2}
-  maxHP: 20
-  currHP: 20
-  setTIleZ: 0
-  setTIleX: 0
-  atkPoint: 0
-  atkDelay: 0
-  atkRange: 0
+  _name: "\uB098\uBB34\uBCBD"
+  _maxHP: 50
+  _currHP: 50
+  _atkPoint: 0
+  _atkDelay: 0
+  _atkRange: 0
+  _rangeRadius: 0
+  _taxPoint: 0
+  _taxDelay: 0
+  _buyPrice: 10
 --- !u!114 &114547908881775778
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -237,4 +241,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currTarget: {fileID: 0}
+  bulletGO: {fileID: 0}
+  shotPos: {fileID: 0}
   isOrigin: 1
+--- !u!114 &114592757663693132
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cae5eae6e75e9b244ac36c867d7ca018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currData: {fileID: 146246}
+  isHero: 0

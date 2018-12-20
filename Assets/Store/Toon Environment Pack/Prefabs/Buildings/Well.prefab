@@ -14,12 +14,13 @@ GameObject:
   - component: {fileID: 54315817510147650}
   - component: {fileID: 114520422191706254}
   - component: {fileID: 114299883667206846}
+  - component: {fileID: 114383423225666718}
   m_Layer: 11
   m_Name: Well
   m_TagString: BUILDING
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 119
   m_IsActive: 0
 --- !u!4 &430786
 Transform:
@@ -203,7 +204,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currTarget: {fileID: 0}
+  bulletGO: {fileID: 0}
+  shotPos: {fileID: 0}
   isOrigin: 1
+--- !u!114 &114383423225666718
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 117880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cae5eae6e75e9b244ac36c867d7ca018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currData: {fileID: 117880}
+  isHero: 0
 --- !u!114 &114520422191706254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -219,10 +235,13 @@ MonoBehaviour:
   sizeZ: 0
   ebuildingType: 4
   subObject: {fileID: 0}
-  maxHP: 5
-  currHP: 5
-  setTIleZ: 0
-  setTIleX: 0
-  atkPoint: 0
-  atkDelay: 0
-  atkRange: 0
+  _name: "\uC6B0\uBB3C"
+  _maxHP: 30
+  _currHP: 30
+  _atkPoint: 0
+  _atkDelay: 0
+  _atkRange: 0
+  _rangeRadius: 0
+  _taxPoint: 0
+  _taxDelay: 0
+  _buyPrice: 15

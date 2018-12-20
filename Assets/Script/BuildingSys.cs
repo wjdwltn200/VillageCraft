@@ -9,6 +9,10 @@ public class BuildingSys : MonoBehaviour {
     private BuildingData buildingData;
     private MonsAI MonsStats;
     private PlayerData playerData;
+    private bulletMgr bulletMgr;
+
+    public GameObject bulletGO;
+    public GameObject shotPos;
 
     private State currState;
     private State NextState;
@@ -19,6 +23,7 @@ public class BuildingSys : MonoBehaviour {
     {
         tr = GetComponent<Transform>();
         playerData = GameObject.Find("PlayerMgr").GetComponent<PlayerData>();
+        bulletMgr = GameObject.Find("BulletManager").GetComponent<bulletMgr>();
         buildingData = GetComponent<BuildingData>();
         buildingType = GetComponent<BuildingData>().ebuildingType;
     }
@@ -83,10 +88,10 @@ public class BuildingSys : MonoBehaviour {
             case State.Move:
                 break;
             case State.Attack:
-                StartCoroutine(TargetAtk(buildingData.atkDelay));
+                StartCoroutine(TargetAtk(buildingData._atkDelay));
                 break;
             case State.Tax:
-                StartCoroutine(TaxSys(buildingData.taxDelay));
+                StartCoroutine(TaxSys(buildingData._taxDelay));
                 break;
             default:
                 break;
@@ -150,14 +155,9 @@ public class BuildingSys : MonoBehaviour {
                 {
                     NextState = State.Idle;
                 }
-                else if (MonsStats.currHp > 0.0f)
+                else if (MonsStats._currHP > 0.0f)
                 {
-                    MonsStats.currHp -= buildingData.atkPoint;
-                    if (MonsStats.currHp <= 0.0f)
-                    {
-                        MonsStats.Die();
-                        currTarget = null;
-                    }
+                    bulletMgr.addArrow(bulletGO, shotPos.transform, currTarget.transform, buildingData._rangeRadius, buildingData._atkPoint);
                 }
 
                 GetComponent<SphereCollider>().enabled = false;
@@ -174,7 +174,7 @@ public class BuildingSys : MonoBehaviour {
     IEnumerator TaxSys(float delay)
     {
         NextState = State.Tax;
-        playerData.currGold += (int)buildingData.taxPoint;
+        playerData.currGold += (int)buildingData._taxPoint;
         yield return new WaitForSeconds(delay);
         actionAI(NextState);
     }
@@ -182,7 +182,7 @@ public class BuildingSys : MonoBehaviour {
 
     void isTargetLost()
     {
-        if (currTarget != null && Vector3.Distance(tr.position, currTarget.transform.position) > buildingData.atkRange)
+        if (currTarget != null && Vector3.Distance(tr.position, currTarget.transform.position) > buildingData._atkRange)
         {
             currTarget = null;
         }

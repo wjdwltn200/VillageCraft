@@ -5,21 +5,11 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour {
 
-    public int currGold;
+    public int currGold = 0;
     public Text txtGold;
-
-    private void Awake()
-    {
-        currGold = 0;
-    }
-
-    // Use this for initialization
-    void Start () {
-		
-	}
 	
 	// Update is called once per frame
 	void Update () {
-        txtGold.text = "currGold : " + currGold.ToString();
+        txtGold.text = currGold.ToString();
     }
 }

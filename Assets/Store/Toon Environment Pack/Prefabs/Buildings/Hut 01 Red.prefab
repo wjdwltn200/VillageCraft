@@ -14,12 +14,13 @@ GameObject:
   - component: {fileID: 54896264802662418}
   - component: {fileID: 114998273971207828}
   - component: {fileID: 114531928418054384}
+  - component: {fileID: 114758566791638478}
   m_Layer: 11
   m_Name: Hut 01 Red
   m_TagString: BUILDING
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 119
   m_IsActive: 0
 --- !u!4 &448954
 Transform:
@@ -215,7 +216,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currTarget: {fileID: 0}
+  bulletGO: {fileID: 0}
+  shotPos: {fileID: 0}
   isOrigin: 1
+--- !u!114 &114758566791638478
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 125562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cae5eae6e75e9b244ac36c867d7ca018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currData: {fileID: 125562}
+  isHero: 0
 --- !u!114 &114998273971207828
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -231,10 +247,13 @@ MonoBehaviour:
   sizeZ: 1
   ebuildingType: 2
   subObject: {fileID: 0}
-  maxHP: 10
-  currHP: 10
-  setTIleZ: 0
-  setTIleX: 0
-  atkPoint: 0
-  atkDelay: 0
-  atkRange: 0
+  _name: "\uCD08\uAC00\uC9D1"
+  _maxHP: 35
+  _currHP: 35
+  _atkPoint: 0
+  _atkDelay: 0
+  _atkRange: 0
+  _rangeRadius: 0
+  _taxPoint: 0
+  _taxDelay: 0
+  _buyPrice: 20

@@ -1,52 +1,87 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraCtrl : MonoBehaviour {
     public float moveSpeed;
     private Transform tr;
+    private GameObject camGO;
     private Camera cam;
+    private Transform playerTr;
 
     public float minSize;
     public float maxSize;
 
+    public float zoomValue;
+    private bool isZoomIn = false;
+    private bool isZoomOut = false;
+    private bool isLookAtPlayer = false;
+
     private void Start()
     {
         tr = GetComponent<Transform>();
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        playerTr = GameObject.Find("Hero_0").GetComponent<Transform>();
+        camGO = GameObject.FindGameObjectWithTag("MainCamera");
+        cam = camGO.GetComponent<Camera>();
         cam.orthographicSize = maxSize / 2.0f;
     }
 
     private void LateUpdate()
     {
-        moveInputKey();
+        #region moveSys
+        if (isZoomIn) front();
+        if (isZoomOut) back();
+        if (isLookAtPlayer) LookAtP();
+        #endregion
+    } 
+
+    public void front()
+    {
+        cam.orthographicSize += zoomValue * Time.deltaTime;
+        if (cam.orthographicSize > maxSize)
+            cam.orthographicSize = maxSize;
     }
 
-    void moveInputKey()
+    public void back()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
-            tr.Translate(Vector3.left * moveSpeed * Time.deltaTime);
-        else if (Input.GetKey(KeyCode.RightArrow))
-            tr.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+        cam.orthographicSize -= zoomValue * Time.deltaTime;
+        if (cam.orthographicSize < minSize)
+            cam.orthographicSize = minSize;
+    }
 
-        if (Input.GetKey(KeyCode.UpArrow))
-            tr.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-        else if (Input.GetKey(KeyCode.DownArrow))
-            tr.Translate(Vector3.back * moveSpeed * Time.deltaTime);
+    public void LookAtP()
+    {
+        tr.position = Vector3.Lerp(tr.position , new Vector3(playerTr.position.x + -8.0f, 0, playerTr.position.z + -8.0f), Time.deltaTime);
+    }
 
-        if (Input.GetKey(KeyCode.Z))
-        {
-            cam.orthographicSize += 1.0f;
-            if (cam.orthographicSize > maxSize)
-                cam.orthographicSize = maxSize;
-
+    public void isButtonD(string obj)
+    {
+        if (obj == "ZoomIn"){
+            isZoomIn = true;
         }
-        if (Input.GetKey(KeyCode.X))
+        else if (obj == "ZoomOut")
         {
-            cam.orthographicSize -= 1.0f;
-            if (cam.orthographicSize < minSize)
-                cam.orthographicSize = minSize;
+            isZoomOut = true;
+        }else if (obj == "LookAtPlayer")
+        {
+            isLookAtPlayer = !isLookAtPlayer;
         }
+    }
 
+    public void isButtonU(string obj)
+    {
+        if (obj == "ZoomIn")
+        {
+            isZoomIn = false;
+        }
+        else if (obj == "ZoomOut")
+        {
+            isZoomOut = false;
+        }
+        else if (obj == "LookAtPlayer")
+        {
+            // Null
+        }
     }
 }

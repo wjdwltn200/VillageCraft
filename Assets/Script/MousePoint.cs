@@ -7,6 +7,8 @@ public class MousePoint : MonoBehaviour {
     private List<sTileInfo> tileList;
     private int tileSizeXY;
 
+    private BuildingCraftingUI CraftingUI;
+
     public GameObject TileFloorGO;
     public int clickLayer = 8;
     public int blockLayer = 9;
@@ -20,15 +22,21 @@ public class MousePoint : MonoBehaviour {
     private GameObject tmepListGo;
     private GameObject tempBuilding;
     private BuildingData buildingData;
+    private PlayerData playerData;
 
     Vector3 hitPosition;
     private bool isButton = false;
     private eBuildingType buildingType;
     public int selectBuildingValue;
-    void Update()
+
+    private Touch tempTouchs;
+    private Vector3 touchedPos;
+    private bool touchOn;
+
+    private void Awake()
     {
-        selectBuilding();
-        tileInfo();
+        playerData = GameObject.Find("PlayerMgr").GetComponent<PlayerData>();
+        CraftingUI = GameObject.Find("UIMgr").GetComponent<BuildingCraftingUI>();
     }
 
     private void Start()
@@ -37,23 +45,44 @@ public class MousePoint : MonoBehaviour {
         tileSizeXY = TileFloorGO.GetComponent<TileMapSetting>().tileSizeXY;
     }
 
-    void selectBuilding()
+    void Update()
     {
-        if (isButton) return;
+        tileInfo();
+        //touchSys();
+    }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) selectBuildingValue = 0;
-        if (Input.GetKeyDown(KeyCode.Alpha2)) selectBuildingValue = 1;
-        if (Input.GetKeyDown(KeyCode.Alpha3)) selectBuildingValue = 2;
-        if (Input.GetKeyDown(KeyCode.Alpha4)) selectBuildingValue = 3;
+    void touchSys()
+    {
+        touchOn = false;
 
+        if (Input.touchCount > 0)
+        {
+            for (int i = 0; i < Input.touchCount; i++)
+            {
+
+                tempTouchs = Input.GetTouch(i);
+                if (tempTouchs.phase == TouchPhase.Began)
+                {
+                    touchedPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
+                    touchOn = true;
+                    playerData.currGold += (int)1000.0f;
+                    break;
+                }
+            }
+        }
     }
 
     void tileInfo()
     {
-        if (Input.GetMouseButton(0) && tileList.Count > 0)
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(1)) return;
+
+        if (Input.GetMouseButton(0) && tileList.Count > 0 && CraftingUI.isBuildingListSelect)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo;
+
+            if (Physics.Raycast(ray, out hitInfo, 100.0f, 1 << 5)) Debug.Log("눌림");
 
             if (Physics.Raycast(ray, out hitInfo, 100.0f, 1 << 10))
             {
@@ -81,21 +110,29 @@ public class MousePoint : MonoBehaviour {
 
         if (Input.GetMouseButtonUp(0) && isButton)
         {
-
-            tempBuilding.GetComponent<BuildingData>().setTIleZ = pointZ;
-            tempBuilding.GetComponent<BuildingData>().setTIleX = pointX;
-
-            buildingType = tempBuilding.GetComponent<BuildingData>().ebuildingType;
-
-            if (isBuildingCheck(tempBuildSizeX, tempBuildSizeZ, buildingData.ebuildingType))
+            if ((buildingData._buyPrice <= playerData.currGold))
             {
-                tmepListGo.transform.rotation = tempBuilding.transform.rotation;
+                playerData.currGold -= (int)buildingData._buyPrice;
+                tempBuilding.GetComponent<BuildingData>().setTileXZ(pointX, pointZ);
 
-                GameObject tempBuildingInst = Instantiate(tempBuilding, tmepListGo.transform.position, tmepListGo.transform.rotation, transform);
-                tempBuildingInst.GetComponent<BuildingSys>().isOrigin = false;
+                buildingType = tempBuilding.GetComponent<BuildingData>().ebuildingType;
 
-                setBuildingCheck(tempBuildSizeX, tempBuildSizeZ);
+                if (isBuildingCheck(tempBuildSizeX, tempBuildSizeZ, buildingData.ebuildingType))
+                {
+                    tmepListGo.transform.rotation = tempBuilding.transform.rotation;
+
+                    GameObject tempBuildingInst = Instantiate(tempBuilding, tmepListGo.transform.position, tmepListGo.transform.rotation, transform);
+                    tempBuildingInst.GetComponent<BuildingSys>().isOrigin = false;
+
+                    setBuildingCheck(tempBuildSizeX, tempBuildSizeZ);
+                }
             }
+            else
+            {
+                Debug.Log("응 돈없어~");
+            }
+
+
             tempBuilding.SetActive(false);
             isButton = false;
         }

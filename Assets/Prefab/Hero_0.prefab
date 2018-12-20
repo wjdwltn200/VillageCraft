@@ -59,7 +59,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 18
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1381190489482638
 GameObject:
   m_ObjectHideFlags: 1
@@ -176,6 +176,7 @@ GameObject:
   - component: {fileID: 4533819091822060}
   - component: {fileID: 23406080496560304}
   - component: {fileID: 33685619662113734}
+  - component: {fileID: 136468566278944274}
   m_Layer: 12
   m_Name: Item-1
   m_TagString: Untagged
@@ -271,9 +272,11 @@ GameObject:
   - component: {fileID: 136201070009902126}
   - component: {fileID: 114187437390859820}
   - component: {fileID: 114044928773315862}
+  - component: {fileID: 114045031864583310}
+  - component: {fileID: 114471124239551460}
   m_Layer: 12
   m_Name: Hero_0
-  m_TagString: Untagged
+  m_TagString: PLAYER
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1828,6 +1831,24 @@ MonoBehaviour:
   v: 0
   isAtk: 0
   tSpace: 1
+--- !u!114 &114045031864583310
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1728725255939242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d89b03d30513a5d448adac5dbafbe941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\uC6A9\uB140"
+  _maxHP: 1000
+  _currHP: 1000
+  _atkPoint: 5
+  _atkDelay: 1
+  _atkRange: 0
+  _rangeRadius: 0
 --- !u!114 &114187437390859820
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1839,8 +1860,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db5539cab6611c54e8de414a99a59716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heroData: {fileID: 0}
   moveZ: 0
   moveY: 0
+  weapon: {fileID: 1610697022688000}
+--- !u!114 &114471124239551460
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1728725255939242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cae5eae6e75e9b244ac36c867d7ca018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currType: 0
 --- !u!136 &136201070009902126
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -1854,6 +1889,19 @@ CapsuleCollider:
   m_Height: 1.5
   m_Direction: 1
   m_Center: {x: 0, y: 0.8, z: 0}
+--- !u!136 &136468566278944274
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1610697022688000}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.15000017
+  m_Height: 0.9000005
+  m_Direction: 1
+  m_Center: {x: -0.000001013279, y: 0, z: -0.0000036358833}
 --- !u!137 &137742525177520624
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

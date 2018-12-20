@@ -8,9 +8,9 @@ public enum State
    Idle,
    Move,
    Attack,
-   Tax
+   Tax,
+   Chase
 }
-
 
 public class MonsAI : MonoBehaviour {
 
@@ -19,7 +19,7 @@ public class MonsAI : MonoBehaviour {
     //Animator anim;
     private NavMeshAgent nav;
     public GameObject currTarget;
-    private BuildingData currData;
+    private damageSys TargetDamageSys;
 
     private Transform tr;
     private Rigidbody Rg;
@@ -31,10 +31,20 @@ public class MonsAI : MonoBehaviour {
     public float NavSpeedMax;
     public float NavSpeedAcc;
 
-    public float maxHp = 0.0f;
-    public float currHp = 0.0f;
+    public string _name = "-";
+    public float _maxHP;
+    public float _currHP;
+    public float _atkPoint = 0.0f;
+    public float _atkArea = 0.0f;
+    public float _atkDelay = 0.0f;
+    public float _atkRange = 0.0f;
+    public float _rangeRadius = 0.0f;
 
     public ParticleSystem DieEff;
+    private WaitForSeconds wait;
+    private WaitForSeconds atkDelayWait;
+
+    public int tempInt = 0;
 
     private void Awake()
     {
@@ -42,13 +52,17 @@ public class MonsAI : MonoBehaviour {
         tr = GetComponent<Transform>();
         Rg = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        wait = new WaitForSeconds(0.1f);
+        atkDelayWait = new WaitForSeconds(_atkDelay);
+
+        GetComponent<SphereCollider>().radius = _atkArea;
 
         // Nav 초기화
         nav.speed = NavSpeedMax;
         nav.acceleration = NavSpeedAcc;
 
         // 능력치 초기화
-        currHp = maxHp;
+        _currHP = _maxHP;
     }
 
     void Start () {
@@ -60,17 +74,18 @@ public class MonsAI : MonoBehaviour {
 
     private void Update()
     {
-        if (currHp <= 0.0f)
+        if (_currHP <= 0.0f)
             Die();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (currTarget == null && collision.gameObject.tag == "BUILDING")
+        if (currTarget == null &&
+        (other.tag == "BUILDING") ||
+        (other.tag == "PLAYER"))
         {
-            currTarget = collision.gameObject;
-            currData = currTarget.GetComponent<BuildingData>();
-            actionAI(State.Attack);
+            TargetDamageSys = other.GetComponent<damageSys>();
+            currTarget = other.gameObject;
         }
     }
 
@@ -86,6 +101,7 @@ public class MonsAI : MonoBehaviour {
 
         Rg.constraints = RigidbodyConstraints.None;
         Rg.constraints = RigidbodyConstraints.FreezeRotation;
+        nav.enabled = true;
 
         anim.SetBool("isRun", false);
         anim.SetBool("isAtk", false);
@@ -99,6 +115,9 @@ public class MonsAI : MonoBehaviour {
             case State.Attack:
                 StartCoroutine(Act_Attack());
                 break;
+            case State.Chase:
+                StartCoroutine(Act_Chase());
+                break;
             default:
                 break;
         }
@@ -106,60 +125,119 @@ public class MonsAI : MonoBehaviour {
 
     IEnumerator Act_Move()
     {
-        GetComponent<NavMeshAgent>().enabled = true;
-        nav.SetDestination(target.transform.position);
-
-        anim.SetBool("isRun", true);
-
-        if (currTarget == null)
+        nav.SetDestination(target.transform.position); // 본래 목표를 향해 이동
+        anim.SetBool("isRun", true); // 이동 애니메이션
+        
+        if (currTarget == null) // 적 미 발견시
         {
-            NextState = State.Move;
-        }else if (currTarget != null)
-        {
-            NextState = State.Attack;
+            NextState = State.Move; // 계속 이동
+            yield return new WaitForSeconds(3.0f); // 대기
         }
-        yield return new WaitForSeconds(5.0f);
-        actionAI(NextState);
+        else if (currTarget != null) // 적 발견시
+        {
+            NextState = State.Chase; // 추적으로 변경
+            yield return wait; // 대기
+        }
+
+        actionAI(NextState);  //  행동 전환
     }
 
-    IEnumerator Act_Attack()
+    IEnumerator Act_Chase()
     {
-        if (!currTarget)
+        nav.SetDestination(currTarget.transform.position); // 추격
+        anim.SetBool("isRun", true); // 이동 애니메이션
+
+        if (!currTarget) // 적 미 발견시(사망 등의 예외 경우)
         {
-            NextState = State.Move;
-            actionAI(NextState);
+            NextState = State.Move; // 본래 목표를 향해 이동
+            yield return wait; // 대기
         }
-
-        // 애니메이션 대기
-        yield return new WaitForSeconds(0.1f);
-
-        if (currData.currHP <= 0.0f)
+        else if (currTarget) // 적이 존재 할 경우
         {
-            NextState = State.Move;
-        }
-        else if (currData.currHP > 0.0f)
-        {
-            NextState = State.Attack;
-            Rg.constraints = RigidbodyConstraints.FreezeAll;
-
-            Quaternion rot = Quaternion.LookRotation(currTarget.transform.position - tr.position);
-            rot.x = rot.z = 0.0f;
-            tr.rotation = Quaternion.Slerp(tr.rotation, rot, Time.deltaTime * 10.0f);
-            anim.SetBool("isAtk", true);
-
-            currData.currHP -= 1.0f;
-            if (currData.currHP <= 0.0f)
+            if (isTargetAreaDistance()) // 목표물을 놓친 경우
             {
-                currData.Des();
-                currTarget = null;
+                NextState = State.Move; // 본래 목표를 향해 이동
+                currTarget = null; // 기존 목표는 비워준다
+                yield return wait; // 대기
+            }
+            else
+            {
+                if (isTargetAtkRangeDistance()) // 공격 사정거리 내 진입
+                {
+                    NextState = State.Attack; // 공격 상태 입력
+                    yield return wait; // 대기
+                }
+                else // 공격 사정거리에는 없지만, 추격 에리어에는 존재
+                {
+                    NextState = State.Chase; // 계속 추격
+                    yield return wait; // 대기
+                }
             }
         }
 
-        GetComponent<NavMeshAgent>().enabled = false;
-        yield return new WaitForSeconds(1.0f);
+        actionAI(NextState); // 상태 전환
+    }
+
+
+    IEnumerator Act_Attack()
+    {
+        yield return wait; // 애니메이션 대기
+
+        nav.enabled = false;
+        lookAt(); // 목표 대상을 바라본다
+        anim.SetBool("isAtk", true); // 공격 애니메이션 실행
+        TargetDamageSys.setHpPoint(_atkPoint); // 목표물 hp 차감
+        if (TargetDamageSys.getHpPoint() <= 0.0f) currTarget = null; // 목표물이 죽은 경우
+
+        if (!currTarget) // 목표를 잃어버린 경우
+        {
+            NextState = State.Move;
+            yield return wait;
+        }
+        else if (!isTargetAtkRangeDistance()) // 공격 사정거리 내 없을 경우
+        {
+            NextState = State.Chase; // 목표물을 다시 추격
+            yield return wait;
+        }
+        else if (TargetDamageSys.getHpPoint() > 0.0f) // 목표물의 HP가 남아 있는 경우 다시 공격
+        {
+            NextState = State.Attack;
+            Rg.constraints = RigidbodyConstraints.FreezeAll; // 움직임 굳히기
+
+            yield return atkDelayWait; // 공격 딜레이 만큼 대기
+        }
 
         actionAI(NextState);
     }
 
+    public void attackSys()
+    {
+        if (isTargetAtkRangeDistance())
+        {
+            tempInt++;
+            Debug.Log(tempInt + " : 공격 횟수");
+            currTarget.GetComponent<damageSys>().setHpPoint(_atkPoint);
+        }
+    }
 
+    void lookAt()  // 직선상으로 바라보기
+    {
+        tr.LookAt(currTarget.transform.position);
+        tr.rotation = new Quaternion(0, tr.rotation.y, 0, tr.rotation.w);
+        //Quaternion rot = Quaternion.LookRotation(currTarget.transform.position - tr.position);
+        //rot.x = rot.z = 0.0f;
+        //tr.rotation = Quaternion.Slerp(tr.rotation, rot, Time.deltaTime * 10.0f);
+    }
+
+    bool isTargetAreaDistance()
+    {
+        // true = 놓침
+        return (Vector3.Distance(currTarget.transform.position, tr.position) > _atkArea);
+    }
+
+    bool isTargetAtkRangeDistance()
+    {
+        // true = 공격범위 내
+        return (Vector3.Distance(currTarget.transform.position, tr.position) <= _atkRange);
+    }
 }

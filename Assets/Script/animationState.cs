@@ -5,11 +5,11 @@ using UnityEngine;
 public class animationState : MonoBehaviour {
     Animator anim;
 
+    public HeroAI heroData;
+
     private moveCtrl moveCtrlCS;
     public float moveZ;
     public float moveY;
-
-    public float atkPoint;
 
     public GameObject weapon;
     private CapsuleCollider weaponColl;
@@ -25,7 +25,6 @@ public class animationState : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         animState();
-
     }
 
     void animState()
@@ -46,15 +45,15 @@ public class animationState : MonoBehaviour {
     {
         weaponColl.enabled = false;
         anim.SetBool("isAtk", false);
+        moveCtrlCS.isAtk = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        GameObject tempGO = other.gameObject;
-        if (tempGO.layer == 9)
-        {
-            tempGO.GetComponent<MonsAI>().currHp -= atkPoint;
-            Debug.Log("공격");
-        }
+        //GameObject tempGO = other.gameObject;
+        //if (tempGO.layer == 9)
+        //{
+        //    tempGO.GetComponent<damageSys>().setHpPoint(heroData._atkPoint);
+        //}
     }
 }

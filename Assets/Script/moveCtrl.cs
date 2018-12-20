@@ -31,7 +31,7 @@ public class moveCtrl : MonoBehaviour {
         transform.Translate(Vector3.forward * v * moveSpeed * Time.deltaTime, tSpace);
         transform.Rotate(0, h * rotSpeed * Time.deltaTime, 0, tSpace);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!isAtk && Input.GetKeyDown(KeyCode.Space))
         {
             isAtk = true;
         }
