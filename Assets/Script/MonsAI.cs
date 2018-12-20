@@ -43,6 +43,7 @@ public class MonsAI : MonoBehaviour {
     public ParticleSystem DieEff;
     private WaitForSeconds wait;
     private WaitForSeconds atkDelayWait;
+    private SphereCollider targetCheck;
 
     public int tempInt = 0;
 
@@ -55,7 +56,8 @@ public class MonsAI : MonoBehaviour {
         wait = new WaitForSeconds(0.1f);
         atkDelayWait = new WaitForSeconds(_atkDelay);
 
-        GetComponent<SphereCollider>().radius = _atkArea;
+        targetCheck = GetComponentInChildren<SphereCollider>();
+        targetCheck.radius = _atkArea * 0.1f;
 
         // Nav 초기화
         nav.speed = NavSpeedMax;
@@ -76,16 +78,21 @@ public class MonsAI : MonoBehaviour {
     {
         if (_currHP <= 0.0f)
             Die();
+
+        if (targetCheck.enabled &&
+            (targetCheck.radius < _atkArea)) targetCheck.radius += _atkArea * Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (currTarget == null &&
+        if (!currTarget &&
         (other.tag == "BUILDING") ||
         (other.tag == "PLAYER"))
         {
             TargetDamageSys = other.GetComponent<damageSys>();
             currTarget = other.gameObject;
+            targetCheck.radius = _atkArea * 0.1f;
+            targetCheck.enabled = false;
         }
     }
 
@@ -107,6 +114,15 @@ public class MonsAI : MonoBehaviour {
         anim.SetBool("isAtk", false);
 
         StopAllCoroutines();
+
+        if (!currTarget)
+        {
+            currTarget = null;
+            targetCheck.enabled = true;
+        }
+
+
+
         switch (currState)
         {
             case State.Move:
@@ -131,7 +147,7 @@ public class MonsAI : MonoBehaviour {
         if (currTarget == null) // 적 미 발견시
         {
             NextState = State.Move; // 계속 이동
-            yield return new WaitForSeconds(3.0f); // 대기
+            yield return wait; // 대기
         }
         else if (currTarget != null) // 적 발견시
         {
@@ -144,7 +160,6 @@ public class MonsAI : MonoBehaviour {
 
     IEnumerator Act_Chase()
     {
-        nav.SetDestination(currTarget.transform.position); // 추격
         anim.SetBool("isRun", true); // 이동 애니메이션
 
         if (!currTarget) // 적 미 발견시(사망 등의 예외 경우)
@@ -154,6 +169,8 @@ public class MonsAI : MonoBehaviour {
         }
         else if (currTarget) // 적이 존재 할 경우
         {
+            nav.SetDestination(currTarget.transform.position); // 추격
+
             if (isTargetAreaDistance()) // 목표물을 놓친 경우
             {
                 NextState = State.Move; // 본래 목표를 향해 이동
@@ -186,18 +203,14 @@ public class MonsAI : MonoBehaviour {
         nav.enabled = false;
         lookAt(); // 목표 대상을 바라본다
         anim.SetBool("isAtk", true); // 공격 애니메이션 실행
-        TargetDamageSys.setHpPoint(_atkPoint); // 목표물 hp 차감
-        if (TargetDamageSys.getHpPoint() <= 0.0f) currTarget = null; // 목표물이 죽은 경우
 
         if (!currTarget) // 목표를 잃어버린 경우
         {
             NextState = State.Move;
-            yield return wait;
         }
         else if (!isTargetAtkRangeDistance()) // 공격 사정거리 내 없을 경우
         {
             NextState = State.Chase; // 목표물을 다시 추격
-            yield return wait;
         }
         else if (TargetDamageSys.getHpPoint() > 0.0f) // 목표물의 HP가 남아 있는 경우 다시 공격
         {
@@ -214,30 +227,28 @@ public class MonsAI : MonoBehaviour {
     {
         if (isTargetAtkRangeDistance())
         {
-            tempInt++;
-            Debug.Log(tempInt + " : 공격 횟수");
             currTarget.GetComponent<damageSys>().setHpPoint(_atkPoint);
         }
     }
 
     void lookAt()  // 직선상으로 바라보기
     {
+        if (!currTarget) return;
         tr.LookAt(currTarget.transform.position);
         tr.rotation = new Quaternion(0, tr.rotation.y, 0, tr.rotation.w);
-        //Quaternion rot = Quaternion.LookRotation(currTarget.transform.position - tr.position);
-        //rot.x = rot.z = 0.0f;
-        //tr.rotation = Quaternion.Slerp(tr.rotation, rot, Time.deltaTime * 10.0f);
     }
 
     bool isTargetAreaDistance()
     {
         // true = 놓침
+        if (!currTarget) return true;
         return (Vector3.Distance(currTarget.transform.position, tr.position) > _atkArea);
     }
 
     bool isTargetAtkRangeDistance()
     {
         // true = 공격범위 내
+        if (!currTarget) return false;
         return (Vector3.Distance(currTarget.transform.position, tr.position) <= _atkRange);
     }
 }

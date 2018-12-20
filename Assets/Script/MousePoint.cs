@@ -12,6 +12,9 @@ public class MousePoint : MonoBehaviour {
     public GameObject TileFloorGO;
     public int clickLayer = 8;
     public int blockLayer = 9;
+    public GameObject trueTileGO;
+    public GameObject falseTileGO;
+
 
     private int tileMapSize;
     private int pointX;
@@ -167,6 +170,9 @@ public class MousePoint : MonoBehaviour {
                     {
                         if (!mapSizeCheck((pointX + x), (pointZ + z))) return false;
 
+                        //trueTileGO.transform.position = tileList[((pointZ + z) + (pointX + x) * (tileSizeXY / 2))].listGo.transform.position;
+                        //trueTileGO.transform.Translate(-0.5f, 0, -0.5f, Space.Self); ;
+                        //Instantiate(trueTileGO, TileFloorGO.transform);
                         if (tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isBuilding)
                             return false;
                     }

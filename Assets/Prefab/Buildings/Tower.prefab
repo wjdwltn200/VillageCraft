@@ -177,7 +177,7 @@ MonoBehaviour:
   _atkPoint: 10
   _atkDelay: 2
   _atkRange: 10
-  _rangeRadius: 2
+  _rangeRadius: 0
   _taxPoint: 0
   _taxDelay: 0
   _buyPrice: 10
