@@ -14,7 +14,8 @@ public class MousePoint : MonoBehaviour {
     public int blockLayer = 9;
     public GameObject trueTileGO;
     public GameObject falseTileGO;
-
+    public GameObject isBuildingTileMgr;
+    public List<GameObject> isBuildingTile;
 
     private int tileMapSize;
     private int pointX;
@@ -40,12 +41,15 @@ public class MousePoint : MonoBehaviour {
     {
         playerData = GameObject.Find("PlayerMgr").GetComponent<PlayerData>();
         CraftingUI = GameObject.Find("UIMgr").GetComponent<BuildingCraftingUI>();
+        isBuildingTileMgr = GameObject.Find("isBuildingTileMgr");
+        isBuildingTile = new List<GameObject>();
     }
 
     private void Start()
     {
         tileList = TileFloorGO.GetComponent<TileMapSetting>().listTileGo;
         tileSizeXY = TileFloorGO.GetComponent<TileMapSetting>().tileSizeXY;
+
     }
 
     void Update()
@@ -89,6 +93,8 @@ public class MousePoint : MonoBehaviour {
 
             if (Physics.Raycast(ray, out hitInfo, 100.0f, 1 << 10))
             {
+                isBuildingList();
+
                 hitPosition = hitInfo.point;
                 tileMapSize = tileSizeXY / 4 - 1;
 
@@ -135,7 +141,7 @@ public class MousePoint : MonoBehaviour {
                 Debug.Log("응 돈없어~");
             }
 
-
+            isBuildingList();
             tempBuilding.SetActive(false);
             isButton = false;
         }
@@ -143,44 +149,75 @@ public class MousePoint : MonoBehaviour {
 
     bool isBuildingCheck(int sizeX, int sizeZ, eBuildingType buildingType)
     {
+        bool isTempChaeck = true;
+
         switch (buildingType)
         {
             case eBuildingType.WINDMILL:
-                sizeX += 2;
-                sizeZ += 2;
                 int tempFramPoint = 0;
-                for (int x = -sizeX / 2; x < sizeX / 2 + 1; x++)
+                for (int x = -sizeX; x < sizeX + 1; x++)
                 {
-                    for (int z = -sizeZ / 2; z < sizeZ / 2 + 1; z++)
+                    for (int z = -sizeZ; z < sizeZ + 1; z++)
                     {
                         if (!mapSizeCheck((pointX + x), (pointZ + z))) return false;
 
-                        if (tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isBuilding) return false;
-                        if (tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isFarmland) tempFramPoint++;
+                        if (tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isBuilding)
+                        {
+                            isTempChaeck = false;
+                            GameObject tempGO = Instantiate(falseTileGO, tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].listGo.transform.position, falseTileGO.transform.rotation, isBuildingTileMgr.transform);
+                            tempGO.transform.Translate(0, 0.01f, 0,Space.World);
+                            isBuildingTile.Add(tempGO);
+                        }
+                        else
+                        {
+                            GameObject tempGO = Instantiate(trueTileGO, tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].listGo.transform.position, falseTileGO.transform.rotation, isBuildingTileMgr.transform);
+                            tempGO.transform.Translate(0, 0.01f, 0, Space.World);
+                            isBuildingTile.Add(tempGO);
+                            if (tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isFarmland) tempFramPoint++;
+                        }
                     }
                 }
 
+                if (!isTempChaeck) return false;
                 if (tempFramPoint < 3) return false;
 
                 break;
             default:
-                for (int x = -sizeX / 2; x < sizeX / 2 + 1; x++)
+                for (int x = -sizeX; x < sizeX + 1; x++)
                 {
-                    for (int z = -sizeZ / 2; z < sizeZ / 2 + 1; z++)
+                    for (int z = -sizeZ; z < sizeZ + 1; z++)
                     {
                         if (!mapSizeCheck((pointX + x), (pointZ + z))) return false;
 
-                        //trueTileGO.transform.position = tileList[((pointZ + z) + (pointX + x) * (tileSizeXY / 2))].listGo.transform.position;
-                        //trueTileGO.transform.Translate(-0.5f, 0, -0.5f, Space.Self); ;
-                        //Instantiate(trueTileGO, TileFloorGO.transform);
                         if (tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isBuilding)
-                            return false;
+                        {
+                            isTempChaeck = false;
+                            GameObject tempGO = Instantiate(falseTileGO, tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].listGo.transform.position, falseTileGO.transform.rotation, isBuildingTileMgr.transform);
+                            tempGO.transform.Translate(0, 0.01f, 0,Space.World);
+                            isBuildingTile.Add(tempGO);
+                        }
+                        else
+                        {
+                            GameObject tempGO = Instantiate(trueTileGO, tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].listGo.transform.position, falseTileGO.transform.rotation, isBuildingTileMgr.transform);
+                            tempGO.transform.Translate(0, 0.01f, 0, Space.World);
+                            isBuildingTile.Add(tempGO);
+                        }
                     }
                 }
+
+                if (!isTempChaeck) return false;
                 break;
         }
-
         return true;
+    }
+
+    void isBuildingList()
+    {
+        for (int i = 0; i < isBuildingTile.Count; i++)
+        {
+            Destroy(isBuildingTile[i]);
+        }
+        isBuildingTile.Clear();
     }
 
     void setBuildingCheck(int sizeX, int sizeZ)

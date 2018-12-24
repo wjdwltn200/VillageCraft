@@ -31,6 +31,7 @@ public class damageSys : MonoBehaviour {
                 break;
             case currType.building:
                 currData.GetComponent<BuildingData>()._currHP -= dam;
+                StartCoroutine(currData.GetComponent<BuildingData>().SetShaking());
                 break;
             default:
                 Debug.Log("데미지 시스템 에러");

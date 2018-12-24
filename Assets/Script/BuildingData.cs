@@ -18,6 +18,7 @@ public class BuildingData : MonoBehaviour {
     public int sizeZ;
     public eBuildingType ebuildingType;
     public GameObject subObject;
+    public GameObject mGO;
 
     private int setTIleZ;
     private int setTIleX;
@@ -37,6 +38,7 @@ public class BuildingData : MonoBehaviour {
     public float _buyPrice = 0.0f;
 
     private bool isDes = false;
+    private bool isShaking = false;
 
     public void setTileXZ (int setX, int setZ)
     {
@@ -58,6 +60,14 @@ public class BuildingData : MonoBehaviour {
     private void LateUpdate()
     {
         Des();
+    }
+
+    private void Update()
+    {
+        if (isShaking)
+        {
+            mGO.transform.position = new Vector3(transform.position.x + Random.Range(-0.1f, +0.1f), transform.position.y, transform.position.z + Random.Range(-0.1f, +0.1f));
+        }
     }
 
     public void Des()
@@ -97,6 +107,16 @@ public class BuildingData : MonoBehaviour {
                 break;
             default:
                 break;
+        }
+    }
+
+    public IEnumerator SetShaking()
+    {
+        if (!isShaking)
+        {
+            isShaking = true;
+            yield return new WaitForSeconds(0.3f);
+            isShaking = false;
         }
     }
 }
