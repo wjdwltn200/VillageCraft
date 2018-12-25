@@ -233,7 +233,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.49914566
+      - time: 0.3670702
         functionName: attackSys
         data: 
         objectReferenceParameter: {fileID: 1051936633476952, guid: 4fd8ff3fc56136048b8a322b7846661e,

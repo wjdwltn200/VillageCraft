@@ -15,6 +15,7 @@ public enum State
 public class MonsAI : MonoBehaviour {
 
     public GameObject target;
+    public GameObject rayPos;
 
     //Animator anim;
     private NavMeshAgent nav;
@@ -44,11 +45,13 @@ public class MonsAI : MonoBehaviour {
     private WaitForSeconds wait;
     private WaitForSeconds atkDelayWait;
     private SphereCollider targetCheck;
+    private RaycastHit hitRay;
 
     public int tempInt = 0;
 
     private void Awake()
     {
+        rayPos.transform.Translate(Vector3.forward * (GetComponent<CapsuleCollider>().radius + 0.1f));
         nav = GetComponent<NavMeshAgent>();
         tr = GetComponent<Transform>();
         Rg = GetComponent<Rigidbody>();
@@ -121,8 +124,6 @@ public class MonsAI : MonoBehaviour {
             targetCheck.enabled = true;
         }
 
-
-
         switch (currState)
         {
             case State.Move:
@@ -141,9 +142,14 @@ public class MonsAI : MonoBehaviour {
 
     IEnumerator Act_Move()
     {
-        nav.SetDestination(target.transform.position); // 본래 목표를 향해 이동
         anim.SetBool("isRun", true); // 이동 애니메이션
+
+        if (Physics.Raycast(rayPos.transform.position, rayPos.transform.forward, out hitRay, 0.5f))
+            if (hitRay.collider.gameObject.layer == 9) nav.enabled = false;
+
+        if (nav.enabled) nav.SetDestination(target.transform.position); // 본래 목표를 향해 이동
         
+
         if (currTarget == null) // 적 미 발견시
         {
             NextState = State.Move; // 계속 이동
@@ -169,7 +175,10 @@ public class MonsAI : MonoBehaviour {
         }
         else if (currTarget) // 적이 존재 할 경우
         {
-            nav.SetDestination(currTarget.transform.position); // 추격
+            if (Physics.Raycast(rayPos.transform.position, rayPos.transform.forward, out hitRay, 0.5f))
+                if (hitRay.collider.gameObject.layer == 9) nav.enabled = false;
+
+            if (nav.enabled) nav.SetDestination(currTarget.transform.position); // 추격
 
             if (isTargetAreaDistance()) // 목표물을 놓친 경우
             {
@@ -251,4 +260,5 @@ public class MonsAI : MonoBehaviour {
         if (!currTarget) return false;
         return (Vector3.Distance(currTarget.transform.position, tr.position) <= _atkRange);
     }
+
 }

@@ -109,10 +109,8 @@ public class MousePoint : MonoBehaviour {
                 tempBuildSizeX = buildingData.sizeX;
                 tempBuildSizeZ = buildingData.sizeZ;
 
-                if (isBuildingCheck(tempBuildSizeX, tempBuildSizeZ, buildingData.ebuildingType))
-                {
-                    tempBuilding.transform.position = tmepListGo.transform.position;
-                }
+                if (isBuildingCheck(tempBuildSizeX, tempBuildSizeZ, buildingData.ebuildingType)) { }
+                tempBuilding.transform.position = tmepListGo.transform.position;
                 isButton = true;
             }
         }
