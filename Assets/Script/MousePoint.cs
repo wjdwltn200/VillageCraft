@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+
 
 public class MousePoint : MonoBehaviour {
 
@@ -54,8 +56,7 @@ public class MousePoint : MonoBehaviour {
 
     void Update()
     {
-        tileInfo();
-        //touchSys();
+        touchSys();
     }
 
     void touchSys()
@@ -66,31 +67,36 @@ public class MousePoint : MonoBehaviour {
         {
             for (int i = 0; i < Input.touchCount; i++)
             {
-
-                tempTouchs = Input.GetTouch(i);
-                if (tempTouchs.phase == TouchPhase.Began)
-                {
-                    touchedPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
-                    touchOn = true;
-                    playerData.currGold += (int)1000.0f;
-                    break;
-                }
+                if (EventSystem.current.IsPointerOverGameObject(i) == false)
+                    tempTouchs = Input.GetTouch(i);
+                    if (tempTouchs.phase == TouchPhase.Moved)
+                    {
+                        touchedPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
+                        touchOn = true;
+                        tileInfo(touchedPos);
+                        break;
+                    }
             }
+        }
+        else
+        {
+            tileInfo(Input.mousePosition);
         }
     }
 
-    void tileInfo()
+    void tileInfo(Vector3 touchPos)
     {
-        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
-        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(1)) return;
+        //if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+        //if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(1)) return;
 
-        if (Input.GetMouseButton(0) && tileList.Count > 0 && CraftingUI.isBuildingListSelect)
+        //Vector3 tempVec3 = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+        //Debug.Log("tempVec3" + tempVec3.ToString());
+
+        if (Input.GetMouseButton(0) && tileList.Count > 0 && CraftingUI.isBuildingListSelect && !EventSystem.current.IsPointerOverGameObject())
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(touchPos);
+
             RaycastHit hitInfo;
-
-            if (Physics.Raycast(ray, out hitInfo, 100.0f, 1 << 5)) Debug.Log("눌림");
-
             if (Physics.Raycast(ray, out hitInfo, 100.0f, 1 << 10))
             {
                 isBuildingList();

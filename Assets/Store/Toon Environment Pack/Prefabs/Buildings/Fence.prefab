@@ -219,6 +219,7 @@ MonoBehaviour:
   sizeZ: 0
   ebuildingType: 1
   subObject: {fileID: 1154255515504198, guid: 639dce1dfed84314680955fc050e52a3, type: 2}
+  mGO: {fileID: 0}
   _name: "\uB098\uBB34\uBCBD"
   _maxHP: 50
   _currHP: 50
@@ -255,5 +256,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae5eae6e75e9b244ac36c867d7ca018, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currData: {fileID: 146246}
-  isHero: 0
+  currType: 0
