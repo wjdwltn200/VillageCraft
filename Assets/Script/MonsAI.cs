@@ -45,7 +45,6 @@ public class MonsAI : MonoBehaviour {
     private WaitForSeconds wait;
     private WaitForSeconds atkDelayWait;
     private SphereCollider targetCheck;
-    private RaycastHit hitRay;
 
     public int tempInt = 0;
 
@@ -143,12 +142,7 @@ public class MonsAI : MonoBehaviour {
     IEnumerator Act_Move()
     {
         anim.SetBool("isRun", true); // 이동 애니메이션
-
-        if (Physics.Raycast(rayPos.transform.position, rayPos.transform.forward, out hitRay, 0.5f))
-            if (hitRay.collider.gameObject.layer == 9) nav.enabled = false;
-
         if (nav.enabled) nav.SetDestination(target.transform.position); // 본래 목표를 향해 이동
-        
 
         if (currTarget == null) // 적 미 발견시
         {
@@ -175,9 +169,6 @@ public class MonsAI : MonoBehaviour {
         }
         else if (currTarget) // 적이 존재 할 경우
         {
-            if (Physics.Raycast(rayPos.transform.position, rayPos.transform.forward, out hitRay, 0.5f))
-                if (hitRay.collider.gameObject.layer == 9) nav.enabled = false;
-
             if (nav.enabled) nav.SetDestination(currTarget.transform.position); // 추격
 
             if (isTargetAreaDistance()) // 목표물을 놓친 경우

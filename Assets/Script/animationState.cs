@@ -37,7 +37,7 @@ public class animationState : MonoBehaviour {
             moveCtrlCS.isAtk = false;
         }
 
-        if (moveCtrlCS.v > 0.1f) anim.SetBool("isRun", true);
+        if (moveCtrlCS.v != 0.0f) anim.SetBool("isRun", true);
         else if (moveCtrlCS.v == 0.0f) anim.SetBool("isRun", false);
     }
 

@@ -38,8 +38,8 @@ public class enemySetting : MonoBehaviour {
         deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
         float fps = 1.0f / deltaTime;
 
-        num.text = "생성된 개수 : " + enemyObj.Count.ToString();
-        num2.text = "FPS : " + fps.ToString();
+        //num.text = "생성된 개수 : " + enemyObj.Count.ToString();
+        //num2.text = "FPS : " + fps.ToString();
 
     }
 

@@ -39,8 +39,18 @@ public class MousePoint : MonoBehaviour {
     private Vector3 touchedPos;
     private bool touchOn;
 
+    private float screenWidth = Screen.width;
+    private float screenHeight = Screen.height;
+    public UnityEngine.UI.Text Wid;
+    public UnityEngine.UI.Text Hei;
+
+
+
+    private CameraCtrl camGO;
+
     private void Awake()
     {
+        camGO = GameObject.Find("CamObj").GetComponent<CameraCtrl>();
         playerData = GameObject.Find("PlayerMgr").GetComponent<PlayerData>();
         CraftingUI = GameObject.Find("UIMgr").GetComponent<BuildingCraftingUI>();
         isBuildingTileMgr = GameObject.Find("isBuildingTileMgr");
@@ -49,6 +59,9 @@ public class MousePoint : MonoBehaviour {
 
     private void Start()
     {
+        Wid.text = screenWidth.ToString();
+        Hei.text = screenHeight.ToString();
+
         tileList = TileFloorGO.GetComponent<TileMapSetting>().listTileGo;
         tileSizeXY = TileFloorGO.GetComponent<TileMapSetting>().tileSizeXY;
 
@@ -71,9 +84,12 @@ public class MousePoint : MonoBehaviour {
                     tempTouchs = Input.GetTouch(i);
                     if (tempTouchs.phase == TouchPhase.Moved)
                     {
-                        touchedPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
                         touchOn = true;
+
+                        touchedPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
+
                         tileInfo(touchedPos);
+                        screenMove(touchedPos);
                         break;
                     }
             }
@@ -81,6 +97,32 @@ public class MousePoint : MonoBehaviour {
         else
         {
             tileInfo(Input.mousePosition);
+        }
+    }
+
+
+    void screenMove(Vector3 touchPos)
+    {
+        if (!CraftingUI.isBuildingListSelect) return;
+
+        Vector3 screenPoint = Camera.main.WorldToScreenPoint(touchPos);
+
+        if (screenPoint.x > (screenWidth - screenWidth / 3.0f) && screenPoint.x < screenWidth)
+        {
+            camGO.moveToCam(0);
+        }
+        else if (screenPoint.x > 0.0f && screenPoint.x < screenWidth / 3.0f)
+        {
+            camGO.moveToCam(1);
+        }
+
+        if (screenPoint.y > (screenHeight- screenHeight / 3.0f) && screenPoint.y < screenHeight)
+        {
+            camGO.moveToCam(2);
+        }
+        else if (screenPoint.y > 0.0f && screenPoint.y < screenHeight / 3.0f)
+        {
+            camGO.moveToCam(3);
         }
     }
 
@@ -92,9 +134,15 @@ public class MousePoint : MonoBehaviour {
         //Vector3 tempVec3 = Camera.main.ScreenToViewportPoint(Input.mousePosition);
         //Debug.Log("tempVec3" + tempVec3.ToString());
 
-        if (Input.GetMouseButton(0) && tileList.Count > 0 && CraftingUI.isBuildingListSelect && !EventSystem.current.IsPointerOverGameObject())
+        if (!CraftingUI.isBuildingListSelect) return;
+
+        if ((Input.GetMouseButton(0) || touchOn &&
+            tileList.Count > 0
+             /*&& !EventSystem.current.IsPointerOverGameObject()*/))
         {
-            Ray ray = Camera.main.ScreenPointToRay(touchPos);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (touchOn)
+                ray = Camera.main.ScreenPointToRay(tempTouchs.position);
 
             RaycastHit hitInfo;
             if (Physics.Raycast(ray, out hitInfo, 100.0f, 1 << 10))
@@ -121,17 +169,17 @@ public class MousePoint : MonoBehaviour {
             }
         }
 
-        if (Input.GetMouseButtonUp(0) && isButton)
+        if ((Input.GetMouseButtonUp(0) || !touchOn) && isButton)
         {
             if ((buildingData._buyPrice <= playerData.currGold))
             {
-                playerData.currGold -= (int)buildingData._buyPrice;
                 tempBuilding.GetComponent<BuildingData>().setTileXZ(pointX, pointZ);
 
                 buildingType = tempBuilding.GetComponent<BuildingData>().ebuildingType;
 
                 if (isBuildingCheck(tempBuildSizeX, tempBuildSizeZ, buildingData.ebuildingType))
                 {
+                    playerData.currGold -= (int)buildingData._buyPrice;
                     tmepListGo.transform.rotation = tempBuilding.transform.rotation;
 
                     GameObject tempBuildingInst = Instantiate(tempBuilding, tmepListGo.transform.position, tmepListGo.transform.rotation, transform);

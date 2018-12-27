@@ -36,18 +36,26 @@ public class CameraCtrl : MonoBehaviour {
         #endregion
     } 
 
-    public void front()
+    public void moveToCam(int valud)
     {
-        cam.orthographicSize += zoomValue * Time.deltaTime;
-        if (cam.orthographicSize > maxSize)
-            cam.orthographicSize = maxSize;
+        if (valud == 0) tr.transform.Translate(Vector3.right * moveSpeed * Time.deltaTime, Space.Self);
+        if (valud == 1) tr.transform.Translate(Vector3.left * moveSpeed * Time.deltaTime, Space.Self);
+        if (valud == 2) tr.transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime, Space.Self);
+        if (valud == 3) tr.transform.Translate(Vector3.back * moveSpeed * Time.deltaTime, Space.Self);
     }
 
-    public void back()
+    public void front()
     {
         cam.orthographicSize -= zoomValue * Time.deltaTime;
         if (cam.orthographicSize < minSize)
             cam.orthographicSize = minSize;
+    }
+
+    public void back()
+    {
+        cam.orthographicSize += zoomValue * Time.deltaTime;
+        if (cam.orthographicSize > maxSize)
+            cam.orthographicSize = maxSize;
     }
 
     public void LookAtP()
