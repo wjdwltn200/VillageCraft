@@ -15,7 +15,6 @@ public enum State
 public class MonsAI : MonoBehaviour {
 
     public GameObject target;
-    public GameObject rayPos;
 
     //Animator anim;
     private NavMeshAgent nav;
@@ -50,7 +49,6 @@ public class MonsAI : MonoBehaviour {
 
     private void Awake()
     {
-        rayPos.transform.Translate(Vector3.forward * (GetComponent<CapsuleCollider>().radius + 0.1f));
         nav = GetComponent<NavMeshAgent>();
         tr = GetComponent<Transform>();
         Rg = GetComponent<Rigidbody>();

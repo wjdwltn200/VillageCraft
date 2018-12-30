@@ -225,9 +225,10 @@ ModelImporter:
       curves: []
       events:
       - time: 0.41683778
-        functionName: Hit
+        functionName: attackSys
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 1051936633476952, guid: 4fd8ff3fc56136048b8a322b7846661e,
+          type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

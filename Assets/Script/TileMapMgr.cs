@@ -13,6 +13,9 @@ public class TileMapMgr : MonoBehaviour {
 
     private void Awake()
     {
+        if (GameObject.Find("MainGameDate")) tileSizeXY = GameObject.Find("MainGameDate").GetComponent<MainGameDate>().tileMapSizeDate;
+
+
         // 타일 크기에 맞게 바닥 타일 지정
         tileGround = GameObject.Find("TileGround").GetComponent<Transform>();
         tileGround.localScale = new Vector3(tileSizeXY / 2 * 10, 0.1f, tileSizeXY / 2 * 10);
