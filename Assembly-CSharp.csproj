@@ -91,6 +91,7 @@
     <Compile Include="Assets\Script\TileMapMgr.cs" />
     <Compile Include="Assets\Script\TileMapSetting.cs" />
     <Compile Include="Assets\Script\UIMgr.cs" />
+    <Compile Include="Assets\Store\DissolveEmissionShader\DissolveSphere.cs" />
     <Compile Include="Assets\Store\LowPoly Particles\Demo\Scripts\CameraRotate.cs" />
     <Compile Include="Assets\Store\LowPoly Particles\Demo\Scripts\Demo.cs" />
     <Compile Include="Assets\Store\LowPoly Particles\Demo\Scripts\UIEventHandler.cs" />
@@ -101,6 +102,7 @@
     <None Include="Assets\Store\MagicaVoxel to Unity\Script\Shader\Voxel.shader" />
     <None Include="Assets\Store\LowPoly Particles\Resources\BaseColor.shader" />
     <None Include="Assets\Store\Toon Environment Pack\Read me.txt" />
+    <None Include="Assets\Store\DissolveEmissionShader\DissolveEmission.shader" />
     <None Include="Assets\Store\Simple UI\Fonts\OFL.txt" />
     <None Include="Assets\Store\Toon Environment Pack\www.meshtint.com.txt" />
     <None Include="Assets\Store\LowPoly Particles\ReadMe.txt" />

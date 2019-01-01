@@ -157,6 +157,11 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114953947187863528, guid: e083bc9ba87efbc4381a74073678738a,
+        type: 2}
+      propertyPath: _setTimer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e083bc9ba87efbc4381a74073678738a, type: 2}
   m_IsPrefabAsset: 0

@@ -100,6 +100,8 @@ public class BuildingSys : MonoBehaviour {
 
     IEnumerator Search()
     {
+        if (!buildingData._isTimeclear) yield return null;
+
         switch (buildingType)
         {
             case eBuildingType.NULL:

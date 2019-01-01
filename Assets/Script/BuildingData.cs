@@ -24,6 +24,10 @@ public class BuildingData : MonoBehaviour {
     private int setTIleX;
 
     private TileMapSetting tileMapSet;
+    public float _setTimer;
+    private float _currTimer;
+    public bool _isTimeclear;
+
     public string _name = "-";
     public float _maxHP;
     public float _currHP;
@@ -39,6 +43,8 @@ public class BuildingData : MonoBehaviour {
 
     private bool isDes = false;
     private bool isShaking = false;
+    private Material mat;
+
 
     public void setTileXZ (int setX, int setZ)
     {
@@ -49,12 +55,29 @@ public class BuildingData : MonoBehaviour {
     private void Awake()
     {
         _currHP = _maxHP;
+        tileMapSet = GameObject.Find("TileFloor").GetComponent<TileMapSetting>();
+        mat = mGO.GetComponent<Renderer>().material;
     }
 
     private void Start()
     {
-        tileMapSet = GameObject.Find("TileFloor").GetComponent<TileMapSetting>();
         typeSetting();
+        StartCoroutine(setBuildingTimer());
+    }
+
+    public IEnumerator setBuildingTimer()
+    {
+        _currTimer = 0.0f;
+        _isTimeclear = false;
+        while (_currTimer <= 1.0f)
+        {
+            _currTimer += Time.deltaTime / _setTimer;
+            mat.SetFloat("_DissolveAmount", 1.0f - _currTimer);
+            yield return null;
+        }
+        Debug.Log("완성");
+        _isTimeclear = true;
+        yield return null;
     }
 
     private void LateUpdate()
