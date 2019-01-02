@@ -1,0 +1,7 @@
+﻿setTimer,waveValue,isBoss
+20,10,FALSE
+20,20,TRUE
+25,30,FALSE
+25,40,FALSE
+30,50,FALSE
+30,60,TRUE

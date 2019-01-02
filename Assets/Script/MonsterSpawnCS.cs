@@ -25,16 +25,10 @@ public class MonsterSpawnCS : MonoBehaviour {
     public Dictionary<string, GameObject> monsList = new Dictionary<string, GameObject>();
 
     public void setPortalTr(Transform setTr) { monsterPortal.Add(setTr); }
-
     private void Start()
     {
-        WaveDate waveDate = new WaveDate();
-        waveDate._isBoss = false;
-        waveDate._setTimer = 20.0f;
-        waveDate._waveValue = 10;
-
-        waveDates.Add(waveDate);
         StartCoroutine(setSpawn());
+
     }
 
     public IEnumerator setSpawn()
@@ -44,6 +38,7 @@ public class MonsterSpawnCS : MonoBehaviour {
             yield return null;
         }
 
+        Debug.Log("waveDates.Count : " + waveDates.Count.ToString());
         for (int i = 0; i < waveDates.Count; i++)
         {
             _waveNumber.text = (i + 1).ToString() + "번째 웨이브";
@@ -60,7 +55,13 @@ public class MonsterSpawnCS : MonoBehaviour {
             setTr = monsterPortal[Random.Range(0, monsterPortal.Count)]; // 위치 설정
             for (int j = 0; j < waveDates[i]._waveValue; j++)
             {
-                GameObject tempMons = Instantiate(mons, setTr.transform.position, mons.transform.rotation, transform);
+                if (waveDates[i]._isBoss)
+                {
+                    Instantiate(boss, setTr.transform.position, mons.transform.rotation, transform);
+                    waveDates[i]._isBoss = false;
+                }
+
+                Instantiate(mons, setTr.transform.position, mons.transform.rotation, transform);
                 yield return new WaitForSeconds(1.0f);
             }
         }
