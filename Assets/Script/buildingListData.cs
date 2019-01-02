@@ -12,6 +12,7 @@ public class buildingListData : MonoBehaviour {
     BuildingCraftingUI UIMgr;
     //ScrollRect sr;
 
+    public Sprite _currImg;
     public int buildingArrIndex = -1;
     public Text buttonName;
 
@@ -25,7 +26,9 @@ public class buildingListData : MonoBehaviour {
 
     private void Start()
     {
-        buttonName.text = buildingDate.ebuildingType.ToString();
+        _currImg = buildingDate._img;
+        buttonName.text = buildingDate._name;
+        this.GetComponent<Image>().sprite = _currImg;
     }
 
     public void setBuildingDate(BuildingData data) { buildingDate = data; }
@@ -36,24 +39,4 @@ public class buildingListData : MonoBehaviour {
         mousePoint.selectBuildingValue = buildingArrIndex;
         plane.GetComponent<buildingInfoView>().setBuilding(buildingDate);
     }
-
-    //public override void OnDrag(PointerEventData eventData)
-    //{
-    //    sr.OnBeginDrag(eventData);
-    //}
-
-    //public override void OnBeginDrag(PointerEventData eventData)
-    //{
-    //    sr.OnBeginDrag(eventData);
-    //}
-
-    //public override void OnEndDrag(PointerEventData eventData)
-    //{
-    //    sr.OnEndDrag(eventData);
-    //}
-
-    //public override void OnPointerDown(PointerEventData eventData)
-    //{
-    //    Debug.Log("PPAP");
-    //}
 }

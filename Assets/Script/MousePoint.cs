@@ -11,6 +11,8 @@ public class MousePoint : MonoBehaviour {
 
     private BuildingCraftingUI CraftingUI;
 
+    public GameObject _centerBase;
+
     public GameObject TileFloorGO;
     public int clickLayer = 8;
     public int blockLayer = 9;
@@ -44,12 +46,14 @@ public class MousePoint : MonoBehaviour {
     public UnityEngine.UI.Text Wid;
     public UnityEngine.UI.Text Hei;
 
-
+    private bool isBase;
 
     private CameraCtrl camGO;
 
     private void Awake()
     {
+        isBase = false;
+
         camGO = GameObject.Find("CamObj").GetComponent<CameraCtrl>();
         playerData = GameObject.Find("PlayerMgr").GetComponent<PlayerData>();
         CraftingUI = GameObject.Find("UIMgr").GetComponent<BuildingCraftingUI>();
@@ -64,12 +68,53 @@ public class MousePoint : MonoBehaviour {
 
         tileList = TileFloorGO.GetComponent<TileMapSetting>().listTileGo;
         tileSizeXY = TileFloorGO.GetComponent<TileMapSetting>().tileSizeXY;
-
     }
 
     void Update()
     {
+        if (!isBase && (tileList.Count > 0)) firstBase();
         touchSys();
+    }
+
+    public void firstBase()
+    {
+        // 최초 생성
+        tileMapSize = tileSizeXY / 4 - 1;
+
+        pointX = 0 + tileMapSize;
+        pointZ = 0 + tileMapSize;
+
+        tmepListGo = tileList[(pointZ + pointX * (tileSizeXY / 2))].listGo;
+        _centerBase.SetActive(true);
+
+        tempBuilding = _centerBase;
+        buildingData = tempBuilding.GetComponent<BuildingData>();
+        tempBuildSizeX = buildingData.sizeX;
+        tempBuildSizeZ = buildingData.sizeZ;
+        tempBuilding.transform.position = tmepListGo.transform.position;
+
+        if (isBuildingCheck(tempBuildSizeX, tempBuildSizeZ, buildingData.ebuildingType))
+        {
+            tempBuilding.GetComponent<BuildingData>().setTileXZ(pointX, pointZ);
+            buildingType = tempBuilding.GetComponent<BuildingData>().ebuildingType;
+
+            playerData.currGold -= (int)buildingData._buyPrice;
+            tmepListGo.transform.rotation = tempBuilding.transform.rotation;
+
+            GameObject tempBuildingInst = Instantiate(tempBuilding, tmepListGo.transform.position, tmepListGo.transform.rotation, transform);
+            _centerBase.SetActive(false);
+
+            tempBuildingInst.GetComponent<BuildingSys>().isOrigin = false;
+
+            setBuildingCheck(tempBuildSizeX, tempBuildSizeZ);
+        }
+        else
+        {
+            Debug.Log("무언가 있습니다.");
+            isBase = true;
+        }
+
+        isBase = true;
     }
 
     void touchSys()
@@ -128,12 +173,6 @@ public class MousePoint : MonoBehaviour {
 
     void tileInfo(Vector3 touchPos)
     {
-        //if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
-        //if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(1)) return;
-
-        //Vector3 tempVec3 = Camera.main.ScreenToViewportPoint(Input.mousePosition);
-        //Debug.Log("tempVec3" + tempVec3.ToString());
-
         if (!CraftingUI.isBuildingListSelect) return;
 
         if ((Input.GetMouseButton(0) || touchOn &&
@@ -173,12 +212,11 @@ public class MousePoint : MonoBehaviour {
         {
             if ((buildingData._buyPrice <= playerData.currGold))
             {
-                tempBuilding.GetComponent<BuildingData>().setTileXZ(pointX, pointZ);
-
-                buildingType = tempBuilding.GetComponent<BuildingData>().ebuildingType;
-
                 if (isBuildingCheck(tempBuildSizeX, tempBuildSizeZ, buildingData.ebuildingType))
                 {
+                    tempBuilding.GetComponent<BuildingData>().setTileXZ(pointX, pointZ);
+                    buildingType = tempBuilding.GetComponent<BuildingData>().ebuildingType;
+
                     playerData.currGold -= (int)buildingData._buyPrice;
                     tmepListGo.transform.rotation = tempBuilding.transform.rotation;
 
@@ -274,6 +312,8 @@ public class MousePoint : MonoBehaviour {
 
     void setBuildingCheck(int sizeX, int sizeZ)
     {
+
+
         if (sizeX + sizeZ == 0)
         {
             tileList[(pointZ) + (pointX) * (tileSizeXY / 2)].isBuilding = true;
@@ -290,40 +330,6 @@ public class MousePoint : MonoBehaviour {
                 }
             }
         }
-
-        switch (tileList[(pointZ) + (pointX) * (tileSizeXY / 2)].listGoType)
-        {
-            case eBuildingType.NULL:
-                break;
-            case eBuildingType.WALL:
-                for (int z = -1; z < 2; z++)
-                {
-                    if (z == 0) continue;
-                    if (tileList[(pointZ + z) + (pointX) * (tileSizeXY / 2)].listGoType == eBuildingType.WALL)
-                    {
-                        GameObject tempSubObj = Instantiate(tempBuilding.GetComponent<BuildingData>().subObject, transform.position, transform.rotation, transform);
-                        tempSubObj.transform.position = tempBuilding.transform.position;
-                        tempSubObj.transform.Rotate(-90.0f, 0.0f, 90.0f, Space.World);
-                        tempSubObj.transform.Translate(0, 0, (float)z / 2, Space.World);
-                    }
-                }
-
-                for (int x = -1; x < 2; x++)
-                {
-                    if (x == 0) continue;
-                    if (tileList[(pointZ) + (pointX + x) * (tileSizeXY / 2)].listGoType == eBuildingType.WALL)
-                    {
-                        GameObject tempSubObj = Instantiate(tempBuilding.GetComponent<BuildingData>().subObject, transform.position, transform.rotation, transform);
-                        tempSubObj.transform.position = tempBuilding.transform.position;
-                        tempSubObj.transform.Rotate(-90.0f, -90.0f, 90.0f, Space.World);
-                        tempSubObj.transform.Translate((float)x / 2, 0, 0, Space.World);
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-
         return;
     }
 

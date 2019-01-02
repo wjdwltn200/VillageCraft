@@ -438,6 +438,9 @@ MonoBehaviour:
   mGO: {fileID: 0}
   _setTimer: 0
   _isTimeclear: 0
+  _tempText: {fileID: 0}
+  _img: {fileID: 0}
+  BuildingSet: {fileID: 0}
   _name: "\uCCA8\uD0D1"
   _maxHP: 50
   _currHP: 50

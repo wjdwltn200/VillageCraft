@@ -9,7 +9,7 @@ public class BuildingSys : MonoBehaviour {
     private BuildingData buildingData;
     private MonsAI MonsStats;
     private PlayerData playerData;
-    private bulletMgr bulletMgr;
+    public bulletMgr bulletMgr;
 
     public GameObject bulletGO;
     public GameObject shotPos;
@@ -23,7 +23,6 @@ public class BuildingSys : MonoBehaviour {
     {
         tr = GetComponent<Transform>();
         playerData = GameObject.Find("PlayerMgr").GetComponent<PlayerData>();
-        bulletMgr = GameObject.Find("BulletManager").GetComponent<bulletMgr>();
         buildingData = GetComponent<BuildingData>();
         buildingType = GetComponent<BuildingData>().ebuildingType;
     }
@@ -192,7 +191,7 @@ public class BuildingSys : MonoBehaviour {
 
     private void OnTriggerStay(Collider other)
     {
-        if (currTarget == null && other.gameObject.layer == 9)
+        if (currTarget == null && other.gameObject.layer == 9 && buildingData._isTimeclear)
         {
             currTarget = other.gameObject;
             MonsStats = currTarget.GetComponent<MonsAI>();

@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public enum eUiType
 {
@@ -104,5 +106,10 @@ public class HealthBar : MonoBehaviour {
         }
     }
 
-    public void onUI(bool isOn) { GetComponent<Canvas>().enabled = isOn; }
+    public void onUI(bool isOn)
+    {
+        transform.GetChild(0).GetComponent<Image>().enabled = isOn;
+        transform.GetChild(1).GetComponent<Image>().enabled = isOn;
+        transform.GetChild(2).GetComponent<Image>().enabled = isOn;
+    }
 }

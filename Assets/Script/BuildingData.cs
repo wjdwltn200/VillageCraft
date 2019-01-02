@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum eBuildingType
 {
@@ -9,7 +10,8 @@ public enum eBuildingType
     FARM,
     WINDMILL,
     WELL,
-    TOWER
+    TOWER,
+    BASE
 }
 
 public class BuildingData : MonoBehaviour {
@@ -23,11 +25,15 @@ public class BuildingData : MonoBehaviour {
     private int setTIleZ;
     private int setTIleX;
 
+    private List<Image> _healthBar = new List<Image>();
+
     private TileMapSetting tileMapSet;
     public float _setTimer;
     private float _currTimer;
     public bool _isTimeclear;
 
+    public GameObject _TimerGO;
+    public Sprite _img;
     public string _name = "-";
     public float _maxHP;
     public float _currHP;
@@ -45,7 +51,6 @@ public class BuildingData : MonoBehaviour {
     private bool isShaking = false;
     private Material mat;
 
-
     public void setTileXZ (int setX, int setZ)
     {
         setTIleX = setX;
@@ -61,7 +66,15 @@ public class BuildingData : MonoBehaviour {
 
     private void Start()
     {
+        _TimerGO = this.transform.GetChild(0).gameObject.transform.GetChild(4).gameObject;
+        for (int i = 0; i < 3; i++)
+        {
+            _healthBar.Add(this.transform.GetChild(0).gameObject.transform.GetChild(i).gameObject.GetComponent<Image>());
+            _healthBar[i].enabled = false;
+        }
+
         typeSetting();
+
         StartCoroutine(setBuildingTimer());
     }
 
@@ -73,10 +86,18 @@ public class BuildingData : MonoBehaviour {
         {
             _currTimer += Time.deltaTime / _setTimer;
             mat.SetFloat("_DissolveAmount", 1.0f - _currTimer);
+            _TimerGO.GetComponent<Image>().fillAmount = _currTimer;
             yield return null;
         }
-        Debug.Log("완성");
         _isTimeclear = true;
+        mat.SetFloat("_DissolveAmount", 0.0f);
+        for (int i = 0; i < 3; i++)
+        {
+            _healthBar[i].enabled = true;
+        }
+        this.transform.GetChild(0).gameObject.transform.GetChild(3).gameObject.SetActive(false);
+        _TimerGO.SetActive(false);
+
         yield return null;
     }
 

@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e896c30bd9154240a42c2762d13273e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currImg: {fileID: 0}
   buildingArrIndex: -1
   buttonName: {fileID: 114248803356791958}
 --- !u!114 &114248803356791958

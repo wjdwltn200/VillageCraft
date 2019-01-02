@@ -15,6 +15,8 @@ public enum State
 public class MonsAI : MonoBehaviour {
 
     public GameObject target;
+    public EffPoolMgr effPoolMgr;
+    public ParticleSystem currParticle;
 
     //Animator anim;
     private NavMeshAgent nav;
@@ -99,6 +101,7 @@ public class MonsAI : MonoBehaviour {
     public void Die()
     {
         StopAllCoroutines();
+        effPoolMgr.addEff(currParticle, transform.position);
         Destroy(gameObject);
     }
 

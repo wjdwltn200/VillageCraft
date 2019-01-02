@@ -2071,6 +2071,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  effPoolMgr: {fileID: 0}
+  currParticle: {fileID: 198347104652909348, guid: 475a881d8d9bd04459b14287588af431,
+    type: 2}
   currTarget: {fileID: 0}
   NavSpeedMax: 2
   NavSpeedAcc: 5
