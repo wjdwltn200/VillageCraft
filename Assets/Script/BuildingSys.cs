@@ -19,6 +19,9 @@ public class BuildingSys : MonoBehaviour {
     private eBuildingType buildingType;
     public bool isOrigin = true;
 
+    public AudioSource attackSound;
+    public AudioClip attackClip;
+
     private void Awake()
     {
         tr = GetComponent<Transform>();
@@ -29,6 +32,9 @@ public class BuildingSys : MonoBehaviour {
 
     private void Start()
     {
+        attackSound = this.gameObject.AddComponent<AudioSource>();
+        attackSound.clip = attackClip;
+
         switch (buildingType)
         {
             case eBuildingType.NULL:
@@ -158,6 +164,8 @@ public class BuildingSys : MonoBehaviour {
                 }
                 else if (MonsStats._currHP > 0.0f)
                 {
+                    attackSound.volume = 0.7f;
+                    attackSound.Play();
                     bulletMgr.addArrow(bulletGO, shotPos.transform, currTarget.transform, buildingData._rangeRadius, buildingData._atkPoint);
                 }
 

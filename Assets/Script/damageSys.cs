@@ -13,6 +13,9 @@ public class damageSys : MonoBehaviour {
 
     private GameObject currData;
     public currType currType;
+    public AudioSource audioSource;
+    public AudioClip[] audioClip;
+
 
     private void Awake()
     {
@@ -21,6 +24,12 @@ public class damageSys : MonoBehaviour {
 
     public void setHpPoint (float dam)
     {
+        if (audioClip.Length != 0)
+        {
+            audioSource = this.gameObject.AddComponent<AudioSource>();
+            audioSource.clip = audioClip[Random.Range(0, audioClip.Length)];
+        }
+
         switch (currType)
         {
             case currType.hero:
@@ -32,6 +41,7 @@ public class damageSys : MonoBehaviour {
             case currType.building:
                 currData.GetComponent<BuildingData>()._currHP -= dam;
                 StartCoroutine(currData.GetComponent<BuildingData>().SetShaking());
+                if (Random.Range(1, 10) <= 3) audioSource.Play();
                 break;
             default:
                 Debug.Log("데미지 시스템 에러");

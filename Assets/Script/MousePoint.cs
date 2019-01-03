@@ -50,6 +50,9 @@ public class MousePoint : MonoBehaviour {
 
     private CameraCtrl camGO;
 
+    public AudioSource buildingSound;
+    public AudioClip buildingSoundClip;
+
     private void Awake()
     {
         isBase = false;
@@ -59,6 +62,10 @@ public class MousePoint : MonoBehaviour {
         CraftingUI = GameObject.Find("UIMgr").GetComponent<BuildingCraftingUI>();
         isBuildingTileMgr = GameObject.Find("isBuildingTileMgr");
         isBuildingTile = new List<GameObject>();
+
+        buildingSound = this.gameObject.AddComponent<AudioSource>();
+        buildingSound.clip = buildingSoundClip;
+        buildingSound.volume = 0.6f;
     }
 
     private void Start()
@@ -214,6 +221,7 @@ public class MousePoint : MonoBehaviour {
             {
                 if (isBuildingCheck(tempBuildSizeX, tempBuildSizeZ, buildingData.ebuildingType))
                 {
+                    buildingSound.Play();
                     tempBuilding.GetComponent<BuildingData>().setTileXZ(pointX, pointZ);
                     buildingType = tempBuilding.GetComponent<BuildingData>().ebuildingType;
 
