@@ -38,7 +38,6 @@ public class MonsterSpawnCS : MonoBehaviour {
             yield return null;
         }
 
-        Debug.Log("waveDates.Count : " + waveDates.Count.ToString());
         for (int i = 0; i < waveDates.Count; i++)
         {
             _waveNumber.text = (i + 1).ToString() + "번째 웨이브";
