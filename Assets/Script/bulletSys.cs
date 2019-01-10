@@ -86,7 +86,7 @@ public class bulletSys : MonoBehaviour
     {
         if (!isDie && other.gameObject.layer == 9)
         {
-            other.gameObject.GetComponent<damageSys>().setHpPoint(dam);
+            other.gameObject.GetComponentInParent<damageSys>().setHpPoint(dam);
             isDie = true;
             bulletMgr.addDieList(gameObject);
             gameObject.SetActive(false);

@@ -49,6 +49,9 @@ public class MousePoint : MonoBehaviour {
     private bool isBase;
 
     private CameraCtrl camGO;
+    private Vector2?[] touchPrevPos = { null, null };
+    private Vector2 touchPrevVector;
+    private float touchPrevDist;
 
     public AudioSource buildingSound;
     public AudioClip buildingSoundClip;
@@ -70,6 +73,7 @@ public class MousePoint : MonoBehaviour {
 
     private void Start()
     {
+        Screen.orientation = ScreenOrientation.Portrait;
         Wid.text = screenWidth.ToString();
         Hei.text = screenHeight.ToString();
 
@@ -79,8 +83,19 @@ public class MousePoint : MonoBehaviour {
 
     void Update()
     {
+        //if(Input.touchCount != 0) screenTouchsMove();
         if (!isBase && (tileList.Count > 0)) firstBase();
         touchSys();
+
+    }
+
+    private void LateUpdate()
+    {
+        if (Input.touchCount == 0)
+        {
+            touchPrevPos[0] = null;
+            touchPrevPos[1] = null;
+        }
     }
 
     public void firstBase()
@@ -124,34 +139,81 @@ public class MousePoint : MonoBehaviour {
         isBase = true;
     }
 
+    //void touchSys()
+    //{
+    //    touchOn = false;
+
+    //    if (Input.touchCount > 0)
+    //    {
+    //        for (int i = 0; i < Input.touchCount; i++)
+    //        {
+    //            if (EventSystem.current.IsPointerOverGameObject(i) == false)
+    //                tempTouchs = Input.GetTouch(i);
+    //                if (tempTouchs.phase == TouchPhase.Moved)
+    //                {
+    //                    touchOn = true;
+
+    //                    touchedPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
+
+    //                    tileInfo(touchedPos);
+    //                    screenMove(touchedPos);
+    //                    break;
+    //                }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        tileInfo(Input.mousePosition);
+    //    }
+    //}
+
     void touchSys()
     {
-        touchOn = false;
-
-        if (Input.touchCount > 0)
+        if (Input.touchCount == 0) return;
+        tempTouchs = Input.GetTouch(0);
+        if (tempTouchs.phase == TouchPhase.Began || tempTouchs.phase == TouchPhase.Moved)
         {
-            for (int i = 0; i < Input.touchCount; i++)
-            {
-                if (EventSystem.current.IsPointerOverGameObject(i) == false)
-                    tempTouchs = Input.GetTouch(i);
-                    if (tempTouchs.phase == TouchPhase.Moved)
-                    {
-                        touchOn = true;
-
-                        touchedPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
-
-                        tileInfo(touchedPos);
-                        screenMove(touchedPos);
-                        break;
-                    }
-            }
+            Debug.Log("터치 입력");
+            touchedPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
+            touchOn = true;
+            tileInfo(touchedPos);
         }
-        else
+
+        if (!CraftingUI.isBuildingListSelect && tempTouchs.phase == TouchPhase.Moved)
         {
-            tileInfo(Input.mousePosition);
+            touchedPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
+            //screenMove(touchedPos);
+            Debug.Log("이동");
+        }
+
+        if (tempTouchs.phase == TouchPhase.Ended)
+        {
+            Debug.Log("터치 종료");
+            touchOn = false;
+            tileInfo(touchedPos);
         }
     }
 
+    void screenTouchsMove()
+    {
+        Vector2 touchNewPos = Input.GetTouch(0).position;
+        camGO.transform.position += camGO.transform.TransformDirection((Vector3)((touchPrevPos[0] - touchNewPos) * Camera.main.orthographicSize / Camera.main.pixelHeight * 2f));
+        
+        
+
+        //MoveLimit();
+        touchPrevPos[0] = touchNewPos;
+    }
+
+    void MoveLimit()
+    {
+        Vector3 temp;
+        temp.x = Mathf.Clamp(transform.position.x, 10, 10);
+        temp.y = Mathf.Clamp(transform.position.y, 0, 10);
+        temp.z = Mathf.Clamp(transform.position.z, 10, 12);
+
+        camGO.transform.position = temp;
+    }
 
     void screenMove(Vector3 touchPos)
     {
@@ -182,9 +244,8 @@ public class MousePoint : MonoBehaviour {
     {
         if (!CraftingUI.isBuildingListSelect) return;
 
-        if ((Input.GetMouseButton(0) || touchOn &&
-            tileList.Count > 0
-             /*&& !EventSystem.current.IsPointerOverGameObject()*/))
+        if (touchOn &&
+            tileList.Count > 0)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (touchOn)
@@ -215,7 +276,7 @@ public class MousePoint : MonoBehaviour {
             }
         }
 
-        if ((Input.GetMouseButtonUp(0) || !touchOn) && isButton)
+        if (!touchOn && isButton)
         {
             if ((buildingData._buyPrice <= playerData.currGold))
             {
@@ -230,6 +291,7 @@ public class MousePoint : MonoBehaviour {
 
                     GameObject tempBuildingInst = Instantiate(tempBuilding, tmepListGo.transform.position, tmepListGo.transform.rotation, transform);
                     tempBuildingInst.GetComponent<BuildingSys>().isOrigin = false;
+                    tempBuildingInst.GetComponent<BuildingData>().setTileXZ(pointX, pointZ);
 
                     setBuildingCheck(tempBuildSizeX, tempBuildSizeZ);
                 }
@@ -335,6 +397,9 @@ public class MousePoint : MonoBehaviour {
                 {
                     tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isBuilding = true;
                     tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].listGoType = buildingType;
+                    Debug.Log("Z : " + (pointZ + z) + "  X : " + (pointX + x));
+                    Debug.Log(tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isBuilding);
+
                 }
             }
         }

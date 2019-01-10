@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public enum State
 {
@@ -21,6 +22,8 @@ public class MonsAI : MonoBehaviour {
 
     public GameObject currTarget;
     private damageSys TargetDamageSys;
+
+    public SphereCollider currHitCol;
 
     private Transform tr;
     private Rigidbody Rg;
@@ -52,6 +55,7 @@ public class MonsAI : MonoBehaviour {
     public float ViewAngle;
     public float ViewDistance;
     public LayerMask TargetMask;
+    public LayerMask EnemyMask;
     public LayerMask ObstacleMask;
 
     private float setAngle = 0.0f;
@@ -74,8 +78,13 @@ public class MonsAI : MonoBehaviour {
     }
 
     void Start () {
+        transform.GetChild(1).gameObject.transform.GetChild(0).GetComponent<Image>().enabled = false;
+        transform.GetChild(1).gameObject.transform.GetChild(1).GetComponent<Image>().enabled = false;
+        transform.GetChild(1).gameObject.transform.GetChild(2).GetComponent<Image>().enabled = false;
+
         Instantiate(DieEff, transform);
         lookAt(target.transform.position);
+        ViewDistance = GetComponent<SphereCollider>().radius;
 
         currState = State.Move;
         StartCoroutine(Act_Move());
@@ -109,50 +118,35 @@ public class MonsAI : MonoBehaviour {
         Vector3 rightBoundary = DirFromAngle(ViewAngle / 2);
         Debug.DrawLine(tr.position, tr.position + leftBoundary * ViewDistance, Color.blue);
         Debug.DrawLine(tr.position, tr.position + rightBoundary * ViewDistance, Color.blue);
+
     }
 
     public bool FindVisibleTargets()
     {
-        //시야거리 내에 존재하는 모든 컬라이더 받아오기
-        Collider[] targets = Physics.OverlapSphere(tr.position, ViewDistance, TargetMask);
+        Collider[] targets = Physics.OverlapSphere(tr.position, ViewDistance, EnemyMask);
 
         for (int i = 0; i < targets.Length; i++)
         {
             Transform target = targets[i].transform;
-
-            //탱크로부터 타겟까지의 단위벡터
             Vector3 dirToTarget = (target.position - tr.position).normalized;
 
-            //_transform.forward와 dirToTarget은 모두 단위벡터이므로 내적값은 두 벡터가 이루는 각의 Cos값과 같다.
-            //내적값이 시야각/2의 Cos값보다 크면 시야에 들어온 것이다.
             if (Vector3.Dot(tr.forward, dirToTarget) > Mathf.Cos((ViewAngle / 2) * Mathf.Deg2Rad))
-            //if (Vector3.Angle(_transform.forward, dirToTarget) < ViewAngle/2)
             {
-                float distToTarget = Vector3.Distance(tr.position, target.position);
+                //Ray ray = new Ray();
+                //ray.origin = new Vector3(tr.position.x, tr.position.y + 1.5f, tr.position.z);
+                //ray.direction = (target.position - tr.position).normalized;
+                //Debug.DrawRay(tr.position, ray.direction * ViewDistance, Color.red);
 
-                if (!Physics.Raycast(tr.position, dirToTarget, distToTarget, ObstacleMask))
+                RaycastHit hit;
+                Vector3 pos = new Vector3(tr.position.x, tr.position.y + 0.5f, tr.position.z);
+                if (Physics.Raycast(pos, dirToTarget, out hit, ViewDistance - 1.0f, EnemyMask))
                 {
                     Debug.DrawLine(tr.position, target.position, Color.red);
-                    //Debug.Log(Quaternion.FromToRotation(Vector3.up, dirToTarget - tr.position).eulerAngles.z);
-                    //Debug.DrawRay(tr.position, Quaternion.FromToRotation(Vector3.up, dirToTarget - tr.position).eulerAngles.z));
                     return true;
                 }
             }
         }
         return false;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!currTarget &&
-        (other.tag == "BUILDING") ||
-        (other.tag == "PLAYER"))
-        {
-            TargetDamageSys = other.GetComponent<damageSys>();
-            currTarget = other.gameObject;
-            //targetCheck.radius = _atkArea * 0.1f;
-            //targetCheck.enabled = false;
-        }
     }
 
     public void Die()
@@ -171,14 +165,6 @@ public class MonsAI : MonoBehaviour {
 
         anim.SetBool("isRun", false);
         anim.SetBool("isAtk", false);
-
-        StopAllCoroutines();
-
-        if (!currTarget)
-        {
-            currTarget = null;
-            //targetCheck.enabled = true;
-        }
 
         switch (currState)
         {
@@ -199,31 +185,36 @@ public class MonsAI : MonoBehaviour {
         }
     }
 
-    IEnumerator Act_Move() // 추적
+
+
+    IEnumerator Act_Move() // 이동
     {
+        anim.SetBool("isRun", true);
 
         if ((FindVisibleTargets()))
         {
-            currState = State.Search;
+            currState = State.Search; // 시야에 걸리면 다른 회전(정지)
         }
-        else
-        {
-            transform.Translate(Vector3.forward * (_moveSpeed * Time.deltaTime), Space.Self);
-        }
+        else transform.Translate(Vector3.forward * (_moveSpeed * Time.deltaTime), Space.Self); // 무조건 전진
+
+        if (!currTarget) targetSet();
+        else currState = State.Chase;
 
         yield return null;
         actionAI(currState);
     }
 
-    IEnumerator Act_Chase() // 추적
+
+    public void targetSet()
     {
-        yield return null;
+        Collider[] targets = Physics.OverlapSphere(tr.position, ViewDistance, TargetMask);
+        if (targets.Length != 0) currTarget = targets[0].transform.gameObject;
+        if (currTarget) currState = State.Chase;
     }
 
     IEnumerator Act_Search() // 검색
     {
         AngleVlaue = Random.Range(0, 2);
-        Debug.Log(AngleVlaue);
         while (FindVisibleTargets())
         {
             if (AngleVlaue == 0)
@@ -237,16 +228,50 @@ public class MonsAI : MonoBehaviour {
             yield return null;
         }
         AngleVlaue = 0;
+
         currState = State.Move;
+        if(!currTarget) targetSet();
 
         yield return null;
         actionAI(currState);
     }
 
+    IEnumerator Act_Chase() // 추적
+    {
+        if (currTarget) lookAt(currTarget.transform.position);
+
+        currState = State.Move;
+
+        if (currTarget &&
+            Vector3.Distance(tr.position, currTarget.transform.position) > (ViewDistance * 2.0f))
+        {
+            currTarget = null;
+        }else if (currTarget &&
+            Vector3.Distance(tr.position, currTarget.transform.position) <= _atkRange)
+        {
+            currState = State.Attack;
+        }
+
+
+        yield return null;
+        actionAI(currState);
+    }
+
+
+
     IEnumerator Act_Attack() // 공격
     {
-        yield return null;
+        anim.SetBool("isAtk", true);
+        if (currTarget)
+        {
+            lookAt(currTarget.transform.position);
+            currState = State.Chase;
+        }
+
+        yield return new WaitForSeconds(2.0f);
+        actionAI(currState);
     }
+
 
     //IEnumerator Act_Move()
     //{
@@ -327,6 +352,11 @@ public class MonsAI : MonoBehaviour {
 
     //    actionAI(NextState);
     //}
+
+    public float trDis(Vector3 pos)
+    {
+        return Vector3.Distance(tr.position, pos);
+    }
 
     public void attackSys()
     {

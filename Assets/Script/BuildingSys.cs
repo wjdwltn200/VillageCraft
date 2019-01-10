@@ -27,6 +27,7 @@ public class BuildingSys : MonoBehaviour {
         tr = GetComponent<Transform>();
         playerData = GameObject.Find("PlayerMgr").GetComponent<PlayerData>();
         buildingData = GetComponent<BuildingData>();
+        buildingData.isOrgim = !GetComponent<BuildingData>().isOrgim;
         buildingType = GetComponent<BuildingData>().ebuildingType;
     }
 
@@ -162,7 +163,7 @@ public class BuildingSys : MonoBehaviour {
                 {
                     NextState = State.Idle;
                 }
-                else if (MonsStats._currHP > 0.0f)
+                else
                 {
                     attackSound.volume = 0.7f;
                     attackSound.Play();

@@ -11,6 +11,11 @@ public class WaveDate
 }
 
 public class MonsterSpawnCS : MonoBehaviour {
+    public ScreenEffMgrCS _screenEffMgrCS;
+    public GameObject CamGO;
+    private Vector3 oringCamPos;
+    private Vector3 spawnCamPos;
+    public bool isCamMove = false;
 
     public List<WaveDate> waveDates = new List<WaveDate>();
     public List<Transform> monsterPortal = new List<Transform>();
@@ -28,11 +33,12 @@ public class MonsterSpawnCS : MonoBehaviour {
     private void Start()
     {
         StartCoroutine(setSpawn());
-
     }
 
     public IEnumerator setSpawn()
     {
+        GameObject tempMons;
+
         while (monsterPortal.Count != 4)
         {
             yield return null;
@@ -52,17 +58,59 @@ public class MonsterSpawnCS : MonoBehaviour {
             _waveTimer.text = "적 등장!";
 
             setTr = monsterPortal[Random.Range(0, monsterPortal.Count)]; // 위치 설정
+
+            spawnCamPos = setTr.position;
+            StartCoroutine(camMove());
+            _screenEffMgrCS.setScreenEff(0);
             for (int j = 0; j < waveDates[i]._waveValue; j++)
             {
                 if (waveDates[i]._isBoss)
                 {
-                    Instantiate(boss, setTr.transform.position, mons.transform.rotation, transform);
+                    tempMons =  Instantiate(boss, setTr.transform.position, mons.transform.rotation, transform);
+                    tempMons.transform.Translate(Random.Range(-2.0f, 2.0f), 0, Random.Range(-2.0f, 2.0f));
                     waveDates[i]._isBoss = false;
                 }
 
-                Instantiate(mons, setTr.transform.position, mons.transform.rotation, transform);
+                tempMons = Instantiate(mons, setTr.transform.position, mons.transform.rotation, transform);
+                tempMons.transform.Translate(Random.Range(-2.0f, 2.0f), 0, Random.Range(-2.0f, 2.0f));
                 yield return new WaitForSeconds(1.0f);
             }
         }
+    }
+
+    public IEnumerator camMove()
+    {
+        isCamMove = true;
+        oringCamPos = CamGO.transform.position;
+        spawnCamPos -= Vector3.right * 10.0f;
+        spawnCamPos -= Vector3.forward * 10.0f;
+
+        float TempTime = 0.0f;
+        while(TempTime <= 2.0f)
+        {
+            TempTime += Time.deltaTime;
+            CamGO.transform.position = Vector3.Lerp(CamGO.transform.position, spawnCamPos, Time.deltaTime);
+            yield return null;
+        }
+
+        TempTime = 0.0f;
+
+        while (TempTime <= 3.0f)
+        {
+            TempTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        TempTime = 0.0f;
+        while (TempTime <= 2.0f)
+        {
+            TempTime += Time.deltaTime;
+            CamGO.transform.position = Vector3.Lerp(CamGO.transform.position, oringCamPos, Time.deltaTime);
+            yield return null;
+        }
+
+        isCamMove = false;
+        yield break;
     }
 }

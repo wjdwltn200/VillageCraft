@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class sTileInfo
 {
     public GameObject listGo;
@@ -79,9 +80,13 @@ public class TileMapSetting : MonoBehaviour {
                     monsterSpawnCS.setPortalTr(temp.transform);
                 }
 
-                //// 중심 스킵
-                //if (x + 3 >= (tileSizeXY / 4) && x - 3 <= (tileSizeXY / 4) &&
-                //    z + 3 >= (tileSizeXY / 4) && z - 3 <= (tileSizeXY / 4)) continue;
+                // 중심 스킵
+                if (tileSizeXY / 4 - 3 < x && tileSizeXY / 4 + 3 > x &&
+                    tileSizeXY / 4 - 3 < z && tileSizeXY / 4 + 3 > z)
+                {
+                    continue;
+                }
+
 
                 if (x <= 3 || z <= 3)  continue;
                 if (x >= (tileSizeXY / 2) - 3 || z >= (tileSizeXY / 2) - 3) continue;

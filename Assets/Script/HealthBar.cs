@@ -30,7 +30,6 @@ public class HealthBar : MonoBehaviour {
     private void Awake()
     {
         if (addGo.GetComponent<BuildingSys>() && addGo.GetComponent<BuildingSys>().isOrigin) return;
-
         transform.position = new Vector3(transform.position.x, addGo.transform.position.y, transform.position.z);
     }
 
@@ -54,7 +53,7 @@ public class HealthBar : MonoBehaviour {
                 break;
         }
 
-        GetComponent<Canvas>().enabled = true;
+        
 
         localStartPosition = transform.localPosition;
         _currHP = _maxHP = addGo.GetComponent<damageSys>().getHpPoint();

@@ -16,6 +16,9 @@ public enum eBuildingType
 
 public class BuildingData : MonoBehaviour {
 
+    public EffPoolMgr effPoolMgr;
+    public ParticleSystem currParticle;
+
     public int sizeX;
     public int sizeZ;
     public eBuildingType ebuildingType;
@@ -47,14 +50,16 @@ public class BuildingData : MonoBehaviour {
 
     public float _buyPrice = 0.0f;
 
-    private bool isDes = false;
     private bool isShaking = false;
     private Material mat;
+
+    public bool isOrgim = false;
 
     public void setTileXZ (int setX, int setZ)
     {
         setTIleX = setX;
         setTIleZ = setZ;
+        Debug.Log("setTIleX : " + setTIleX + ", " + "setTIleZ : " + setTIleZ);
     }
 
     private void Awake()
@@ -75,11 +80,22 @@ public class BuildingData : MonoBehaviour {
 
         typeSetting();
 
-        StartCoroutine(setBuildingTimer());
+        if (!isOrgim) StartCoroutine(setBuildingTimer());
+        if (!isOrgim) GetComponent<BoxCollider>().enabled = true;
+        if (!isOrgim)
+        {
+            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(0).gameObject.transform.Translate(0, +2.0f, 0);
+        }
     }
 
     public IEnumerator setBuildingTimer()
     {
+        if (eBuildingType.WINDMILL == ebuildingType)
+        {
+            transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        }
+
         _currTimer = 0.0f;
         _isTimeclear = false;
         while (_currTimer <= 1.0f)
@@ -98,12 +114,16 @@ public class BuildingData : MonoBehaviour {
         this.transform.GetChild(0).gameObject.transform.GetChild(3).gameObject.SetActive(false);
         _TimerGO.SetActive(false);
 
+        if (eBuildingType.WINDMILL == ebuildingType)
+        {
+            transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        }
         yield return null;
     }
 
     private void LateUpdate()
     {
-        Des();
+        if (_currHP <= 0.0f) Des();
     }
 
     private void Update()
@@ -116,20 +136,21 @@ public class BuildingData : MonoBehaviour {
 
     public void Des()
     {
-        if (_currHP <= 0.0f)
+        for (int x = -sizeX; x < sizeX + 1; x++)
         {
-            isDes = true;
-            tileMapSet.listTileGo[(setTIleZ + setTIleX * (tileMapSet.tileSizeXY / 2))].isBuilding = false;
-            tileMapSet.listTileGo[(setTIleZ + setTIleX * (tileMapSet.tileSizeXY / 2))].listGoType = eBuildingType.NULL;
-
-            Destroy(gameObject, 0.5f);
+            for (int z = -sizeZ; z < sizeZ + 1; z++)
+            {
+                Debug.Log("setTIleZ : " + setTIleZ);
+                Debug.Log("setTIleX : " + setTIleX);
+                Debug.Log("(setTIleZ + z) : " + (setTIleZ + z) + ", " + "(setTIleX + x) : " + (setTIleX + x));
+                tileMapSet.listTileGo[(setTIleZ + z) + (setTIleX + x) * (tileMapSet.tileSizeXY / 2)].isBuilding = false;
+                tileMapSet.listTileGo[(setTIleZ + z) + (setTIleX + x) * (tileMapSet.tileSizeXY / 2)].listGoType = eBuildingType.NULL;
+                Debug.Log("isBuilding : " + tileMapSet.listTileGo[((setTIleZ + z) + (setTIleX + x) * (tileMapSet.tileSizeXY / 2))].isBuilding);
+            }
         }
-    }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.tag == "SUBWALL" && isDes)
-            Destroy(other.gameObject);
+        effPoolMgr.addEff(currParticle, transform.position);
+        Destroy(gameObject);
     }
 
     private void typeSetting()

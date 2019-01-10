@@ -90,6 +90,7 @@
     <Compile Include="Assets\Script\moveKey.cs" />
     <Compile Include="Assets\Script\PlayerData.cs" />
     <Compile Include="Assets\Script\ReadCsvCS.cs" />
+    <Compile Include="Assets\Script\ScreenEffMgrCS.cs" />
     <Compile Include="Assets\Script\TileMapMgr.cs" />
     <Compile Include="Assets\Script\TileMapSetting.cs" />
     <Compile Include="Assets\Script\UIMgr.cs" />

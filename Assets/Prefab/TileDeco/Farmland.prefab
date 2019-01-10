@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4937163227572162}
   - component: {fileID: 23267441369868862}
   - component: {fileID: 33961765415023868}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Farmland
   m_TagString: Respawn
   m_Icon: {fileID: 0}
