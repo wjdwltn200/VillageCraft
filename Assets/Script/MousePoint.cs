@@ -73,7 +73,6 @@ public class MousePoint : MonoBehaviour {
 
     private void Start()
     {
-        Screen.orientation = ScreenOrientation.Portrait;
         Wid.text = screenWidth.ToString();
         Hei.text = screenHeight.ToString();
 
@@ -83,7 +82,8 @@ public class MousePoint : MonoBehaviour {
 
     void Update()
     {
-        //if(Input.touchCount != 0) screenTouchsMove();
+        if (EventSystem.current.IsPointerOverGameObject(0) == true) return;
+
         if (!isBase && (tileList.Count > 0)) firstBase();
         touchSys();
 
@@ -139,41 +139,13 @@ public class MousePoint : MonoBehaviour {
         isBase = true;
     }
 
-    //void touchSys()
-    //{
-    //    touchOn = false;
-
-    //    if (Input.touchCount > 0)
-    //    {
-    //        for (int i = 0; i < Input.touchCount; i++)
-    //        {
-    //            if (EventSystem.current.IsPointerOverGameObject(i) == false)
-    //                tempTouchs = Input.GetTouch(i);
-    //                if (tempTouchs.phase == TouchPhase.Moved)
-    //                {
-    //                    touchOn = true;
-
-    //                    touchedPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
-
-    //                    tileInfo(touchedPos);
-    //                    screenMove(touchedPos);
-    //                    break;
-    //                }
-    //        }
-    //    }
-    //    else
-    //    {
-    //        tileInfo(Input.mousePosition);
-    //    }
-    //}
-
     void touchSys()
     {
         if (Input.touchCount == 0) return;
+
         tempTouchs = Input.GetTouch(0);
         if (tempTouchs.phase == TouchPhase.Began || tempTouchs.phase == TouchPhase.Moved)
         {
-            Debug.Log("터치 입력");
             touchedPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
             touchOn = true;
             tileInfo(touchedPos);
@@ -183,12 +155,10 @@ public class MousePoint : MonoBehaviour {
         {
             touchedPos = Camera.main.ScreenToWorldPoint(tempTouchs.position);
             //screenMove(touchedPos);
-            Debug.Log("이동");
         }
 
         if (tempTouchs.phase == TouchPhase.Ended)
         {
-            Debug.Log("터치 종료");
             touchOn = false;
             tileInfo(touchedPos);
         }
@@ -217,7 +187,6 @@ public class MousePoint : MonoBehaviour {
 
     void screenMove(Vector3 touchPos)
     {
-        if (!CraftingUI.isBuildingListSelect) return;
 
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(touchPos);
 
@@ -252,7 +221,7 @@ public class MousePoint : MonoBehaviour {
                 ray = Camera.main.ScreenPointToRay(tempTouchs.position);
 
             RaycastHit hitInfo;
-            if (Physics.Raycast(ray, out hitInfo, 100.0f, 1 << 10))
+            if (Physics.Raycast(ray, out hitInfo, 100.0f, 1 << 0))
             {
                 isBuildingList();
 
@@ -397,8 +366,6 @@ public class MousePoint : MonoBehaviour {
                 {
                     tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isBuilding = true;
                     tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].listGoType = buildingType;
-                    Debug.Log("Z : " + (pointZ + z) + "  X : " + (pointX + x));
-                    Debug.Log(tileList[(pointZ + z) + (pointX + x) * (tileSizeXY / 2)].isBuilding);
 
                 }
             }

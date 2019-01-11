@@ -84,6 +84,7 @@
     <Compile Include="Assets\Script\MainGame\MainGameDate.cs" />
     <Compile Include="Assets\Script\MainGame\MainGameUI.cs" />
     <Compile Include="Assets\Script\MonsAI.cs" />
+    <Compile Include="Assets\Script\MonsPoolMgr.cs" />
     <Compile Include="Assets\Script\MonsterSpawnCS.cs" />
     <Compile Include="Assets\Script\MousePoint.cs" />
     <Compile Include="Assets\Script\moveCtrl.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Assets\Script\PlayerData.cs" />
     <Compile Include="Assets\Script\ReadCsvCS.cs" />
     <Compile Include="Assets\Script\ScreenEffMgrCS.cs" />
+    <Compile Include="Assets\Script\TileDecoSys.cs" />
     <Compile Include="Assets\Script\TileMapMgr.cs" />
     <Compile Include="Assets\Script\TileMapSetting.cs" />
     <Compile Include="Assets\Script\UIMgr.cs" />

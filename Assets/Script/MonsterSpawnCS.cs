@@ -11,6 +11,8 @@ public class WaveDate
 }
 
 public class MonsterSpawnCS : MonoBehaviour {
+    public MonsPoolMgr _monsPoolMgrCS;
+    public MonsPoolMgr _bossPoolMgrCS;
     public ScreenEffMgrCS _screenEffMgrCS;
     public GameObject CamGO;
     private Vector3 oringCamPos;
@@ -37,8 +39,6 @@ public class MonsterSpawnCS : MonoBehaviour {
 
     public IEnumerator setSpawn()
     {
-        GameObject tempMons;
-
         while (monsterPortal.Count != 4)
         {
             yield return null;
@@ -66,13 +66,11 @@ public class MonsterSpawnCS : MonoBehaviour {
             {
                 if (waveDates[i]._isBoss)
                 {
-                    tempMons =  Instantiate(boss, setTr.transform.position, mons.transform.rotation, transform);
-                    tempMons.transform.Translate(Random.Range(-2.0f, 2.0f), 0, Random.Range(-2.0f, 2.0f));
+                    _bossPoolMgrCS.addMons(boss, setTr.transform.position);
                     waveDates[i]._isBoss = false;
                 }
 
-                tempMons = Instantiate(mons, setTr.transform.position, mons.transform.rotation, transform);
-                tempMons.transform.Translate(Random.Range(-2.0f, 2.0f), 0, Random.Range(-2.0f, 2.0f));
+                _monsPoolMgrCS.addMons(mons, setTr.transform.position);
                 yield return new WaitForSeconds(1.0f);
             }
         }

@@ -24,10 +24,15 @@ public class UIMgr : MonoBehaviour {
             temp.GetComponent<RectTransform>().position -= Vector3.down * (i * -temp.GetComponent<RectTransform>().rect.height + -(temp.GetComponent<RectTransform>().rect.height / 2.0f));
             temp.GetComponent<buildingListData>().setBuildingDate(buildingSetting.getDate(i));
             temp.GetComponent<buildingListData>().buildingArrIndex = i;
+            temp.GetComponent<buildingListData>().selectValue();
+            temp.GetComponent<buildingListData>().selectIsValue();
+
         }
         SetContentSize();
 
+
         tempList.SetActive(false);
+
     }
 
     // 지을 수 있는 건물 만큼 스크롤뷰 확장

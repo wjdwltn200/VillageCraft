@@ -21,6 +21,8 @@ public class TileMapDeco
 }
 
 public class TileMapSetting : MonoBehaviour {
+    public int centerXZ;
+
     public int tileSizeXY;
     public GameObject tempTileGo;
     public List<sTileInfo> listTileGo;
@@ -81,8 +83,8 @@ public class TileMapSetting : MonoBehaviour {
                 }
 
                 // 중심 스킵
-                if (tileSizeXY / 4 - 3 < x && tileSizeXY / 4 + 3 > x &&
-                    tileSizeXY / 4 - 3 < z && tileSizeXY / 4 + 3 > z)
+                if (tileSizeXY / 4 - centerXZ < x && tileSizeXY / 4 + centerXZ > x &&
+                    tileSizeXY / 4 - centerXZ < z && tileSizeXY / 4 + centerXZ > z)
                 {
                     continue;
                 }
@@ -136,6 +138,7 @@ public class TileMapSetting : MonoBehaviour {
                     {
                         tempGO = mapDeco.notBuilding[Random.Range(0, mapDeco.notBuilding.Length)];
                         listTileGo[(z) + ((x) * tileSizeXY / 2)].isBuilding = true;
+                        tempGO.GetComponent<TileDecoSys>().setTile(x, z);
                     }
 
                     tempGO.transform.Rotate(0, Random.Range(0.0f, 180.0f), 0, Space.World);

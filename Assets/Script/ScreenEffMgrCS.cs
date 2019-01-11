@@ -26,11 +26,12 @@ public class ScreenEffMgrCS : MonoBehaviour {
     IEnumerator EffSys()
     {
         float time = 0.0f;
-        float value = 0.0f;
+        float timeS = 1.0f;
+        bool isSound = true;
         while (time <= 5.0f)
         {
             time += Time.deltaTime;
-            //value += 0.1f;
+            timeS += Time.deltaTime;
 
             _currEffIndex.transform.GetChild(0).GetComponent<Image>().color =
                 new Color(_currEffIndex.transform.GetChild(0).GetComponent<Image>().color.r,
@@ -38,7 +39,13 @@ public class ScreenEffMgrCS : MonoBehaviour {
                 _currEffIndex.transform.GetChild(0).GetComponent<Image>().color.b,
                 Mathf.Sin(Time.time * 5.0f) / 2 + 0.2f);
 
-            //if (value >= 0.7f) value = 0.0f;
+            if (timeS >= 1.0f && !isSound) isSound = true;
+            if (isSound)
+            {
+                timeS = 0.0f;
+                isSound = false;
+                _currEffIndex.GetComponent<AudioSource>().Play();
+            }
             yield return null;
         }
 

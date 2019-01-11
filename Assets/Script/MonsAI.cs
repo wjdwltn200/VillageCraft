@@ -18,7 +18,11 @@ public class MonsAI : MonoBehaviour {
 
     public GameObject target;
     public EffPoolMgr effPoolMgr;
+    public MonsPoolMgr monsPoolMgr;
     public ParticleSystem currParticle;
+
+    public EffPoolMgr atkEffPoolMgr;
+    public ParticleSystem currAttackParticle;
 
     public GameObject currTarget;
     private damageSys TargetDamageSys;
@@ -62,7 +66,7 @@ public class MonsAI : MonoBehaviour {
     private float AngleTime = 0.0f;
     private int AngleVlaue = 0;
 
-    private void Awake()
+    private void OnEnable()
     {
         tr = GetComponent<Transform>();
         Rg = GetComponent<Rigidbody>();
@@ -70,14 +74,10 @@ public class MonsAI : MonoBehaviour {
         wait = new WaitForSeconds(0.1f);
         atkDelayWait = new WaitForSeconds(_atkDelay);
 
-        //targetCheck = GetComponentInChildren<SphereCollider>();
-        //targetCheck.radius = _atkArea * 0.1f;
+        _currHP = _maxHP;
 
         // 능력치 초기화
-        _currHP = _maxHP;
-    }
 
-    void Start () {
         transform.GetChild(1).gameObject.transform.GetChild(0).GetComponent<Image>().enabled = false;
         transform.GetChild(1).gameObject.transform.GetChild(1).GetComponent<Image>().enabled = false;
         transform.GetChild(1).gameObject.transform.GetChild(2).GetComponent<Image>().enabled = false;
@@ -92,12 +92,15 @@ public class MonsAI : MonoBehaviour {
 
     private void Update()
     {
-        DrawView();             //Scene뷰에 시야범위 그리기
-        AngleTime += Time.deltaTime;
-        if (AngleTime >= 5.0f)
+        DrawView(); //Scene뷰에 시야범위 그리기
+        if (!currTarget && AngleTime >= 3.0f)
         {
             lookAt(target.transform.position);
             AngleTime = 0.0f;
+        }
+        else
+        {
+            AngleTime += Time.deltaTime;
         }
 
         if (_currHP <= 0.0f)
@@ -118,12 +121,11 @@ public class MonsAI : MonoBehaviour {
         Vector3 rightBoundary = DirFromAngle(ViewAngle / 2);
         Debug.DrawLine(tr.position, tr.position + leftBoundary * ViewDistance, Color.blue);
         Debug.DrawLine(tr.position, tr.position + rightBoundary * ViewDistance, Color.blue);
-
     }
 
     public bool FindVisibleTargets()
     {
-        Collider[] targets = Physics.OverlapSphere(tr.position, ViewDistance, EnemyMask);
+        Collider[] targets = Physics.OverlapSphere(tr.position, ViewDistance, EnemyMask | ObstacleMask);
 
         for (int i = 0; i < targets.Length; i++)
         {
@@ -136,6 +138,8 @@ public class MonsAI : MonoBehaviour {
                 //ray.origin = new Vector3(tr.position.x, tr.position.y + 1.5f, tr.position.z);
                 //ray.direction = (target.position - tr.position).normalized;
                 //Debug.DrawRay(tr.position, ray.direction * ViewDistance, Color.red);
+
+                if (target.gameObject.layer == 13) { return true; }
 
                 RaycastHit hit;
                 Vector3 pos = new Vector3(tr.position.x, tr.position.y + 0.5f, tr.position.z);
@@ -153,7 +157,7 @@ public class MonsAI : MonoBehaviour {
     {
         StopAllCoroutines();
         effPoolMgr.addEff(currParticle, transform.position);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     void actionAI (State eMove)
@@ -195,7 +199,10 @@ public class MonsAI : MonoBehaviour {
         {
             currState = State.Search; // 시야에 걸리면 다른 회전(정지)
         }
-        else transform.Translate(Vector3.forward * (_moveSpeed * Time.deltaTime), Space.Self); // 무조건 전진
+        else
+        {
+            transform.Translate(Vector3.forward * (_moveSpeed * Time.deltaTime), Space.Self); // 무조건 전진
+        }
 
         if (!currTarget) targetSet();
         else currState = State.Chase;
@@ -362,6 +369,7 @@ public class MonsAI : MonoBehaviour {
     {
         if (isTargetAtkRangeDistance())
         {
+            if (currAttackParticle) atkEffPoolMgr.addEff(currAttackParticle, currTarget.transform.position);
             currTarget.GetComponent<damageSys>().setHpPoint(_atkPoint);
         }
     }

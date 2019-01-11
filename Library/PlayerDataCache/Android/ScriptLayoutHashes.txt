@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-C:/Users/5_KGA_1/Desktop/VillageCraft(0.4v).apk
+C:/Users/5_KGA_1/Desktop/VillageCraft(1.1v).apk
 SceneListBegin?
 Assets/Scenes/InGame.unity
 SceneListEnd?
@@ -100,10 +100,11 @@ e90403eeda069970e0b9de1533de13a6 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 16da51d1b62ef6d4ee1849350434023b UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
 cf99db52079f7d454b61c657b8715ec0 Unity.Postprocessing.Runtime.dll:UnityEngine.Rendering.PostProcessing.ScreenSpaceReflections
 7028df31e2550df14ca567e0941297fc Assembly-CSharp.dll:.SmoothFollow
-db004f002b99d060dbcf1047895019e0 Assembly-CSharp.dll:.BuildingData
+0a28d88273a1c2cedc619716f70b7707 Assembly-CSharp.dll:.BuildingData
 fc61432802d627e9bad32dbeb93f774e Unity.Postprocessing.Runtime.dll:UnityEngine.Rendering.PostProcessing.PostProcessProfile
 22047f3c3fbb715550f61eddb26e9cd3 Unity.Postprocessing.Runtime.dll:UnityEngine.Rendering.PostProcessing.Vignette
-3b4e10deb99f1fed0632dbb9fb409359 Assembly-CSharp.dll:.TileMapSetting
+54c02f53a97a1936ea59b45e80d3ceab Assembly-CSharp.dll:.MonsPoolMgr
+ad24dfe91b9202b828633e0173a3ab2c Assembly-CSharp.dll:.TileMapSetting
 486cd95c82d8305219c352c06b776e1f UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
 9e61f3535f3c55760a1cedfbd114f4af UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationTrack
 754551afe4f2531f58476bf14c510657 UnityEngine.Timeline.dll:UnityEngine.Timeline.AnimationPlayableAsset
@@ -146,6 +147,7 @@ adf5280a485d626e2382f073b2b87d1c Assembly-CSharp.dll:.UIMgr
 d22c788799ee45d8676254eccf20e8b8 UnityEngine.Analytics.dll:UnityEngine.Analytics.AnalyticsTracker
 f58314b8bf8ddb9487ecf1dc187038a6 Unity.Postprocessing.Runtime.dll:UnityEngine.Rendering.PostProcessing.PostProcessEffectSettings
 2260cf5b9c346e234a70952d2ce85635 Assembly-CSharp.dll:.moveKey
+8d54c60a4f4f781d992787df4eccaeed Assembly-CSharp.dll:.TileDecoSys
 d75dc834c5dec688db75a55a1724c90f UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
 486cd95c82d8305219c352c06b776e1f UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInput
 e1ea12ca952c81d81a9a21fdf34446ed UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
@@ -230,11 +232,12 @@ aac9c55ae7ba4b95b852a7d9c191acd1 Unity.TextMeshPro.dll:TMPro.TextMeshProUGUI
 0a006f3734181ba8b26758f0866152c0 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 cf2ef1f2cab224883e3962840792f400 Assembly-CSharp.dll:.WarriorAnimationDemoFREE
 aae9893fc05b6c8cba8317ed327be0c4 Unity.RenderPipelines.Core.Runtime.dll:UnityEngine.Experimental.Rendering.UI.DebugUIHandlerValue
-b3e73733c9291fd6f383b1b5643a0411 Assembly-CSharp.dll:.MonsAI
+337899d18b3fe767db4c91be9f086b39 Assembly-CSharp.dll:.MonsAI
 b72aab0d227b287e6b5a18d095bd9bba Assembly-CSharp.dll:.buildingInfoView
+1faf8ceff4d2d231709be5295b633084 Assembly-CSharp.dll:.ScreenEffMgrCS
 aae9893fc05b6c8cba8317ed327be0c4 Unity.RenderPipelines.Core.Runtime.dll:UnityEngine.Experimental.Rendering.UI.DebugUIHandlerUIntField
 e04611b8715e6833d2bd7010fc6be10b Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet
-32bce038e1eb3836357dc55ba05b9179 Assembly-CSharp.dll:.MonsterSpawnCS
+11e13cbc0898e72e1b5233c4c169ef27 Assembly-CSharp.dll:.MonsterSpawnCS
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.MainGameUI
 6fc009e19a7ff0ff8cc0fb6c17e62b78 Assembly-CSharp.dll:.PlayerData
 c1791db8df7a6d30dc3a3e487bced78b Unity.Postprocessing.Runtime.dll:UnityEngine.Rendering.PostProcessing.PostProcessVolume

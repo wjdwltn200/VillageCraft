@@ -39,4 +39,9 @@ public class buildingListData : MonoBehaviour {
         mousePoint.selectBuildingValue = buildingArrIndex;
         plane.GetComponent<buildingInfoView>().setBuilding(buildingDate);
     }
+
+    public void selectIsValue()
+    {
+        UIMgr.isBuildingListSelect = false;
+    }
 }

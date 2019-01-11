@@ -7,7 +7,6 @@ public class BuildingSys : MonoBehaviour {
     public GameObject currTarget;
     private Transform tr;
     private BuildingData buildingData;
-    private MonsAI MonsStats;
     private PlayerData playerData;
     public bulletMgr bulletMgr;
 
@@ -35,6 +34,7 @@ public class BuildingSys : MonoBehaviour {
     {
         attackSound = this.gameObject.AddComponent<AudioSource>();
         attackSound.clip = attackClip;
+        attackSound.Stop();
 
         switch (buildingType)
         {
@@ -61,7 +61,12 @@ public class BuildingSys : MonoBehaviour {
                 break;
         }
     }
-    
+
+    private void Update()
+    {
+        if (currTarget && !currTarget.activeSelf) currTarget = null;
+    }
+
     void actionAI(State act)
     {
         NextState = act;
@@ -198,12 +203,15 @@ public class BuildingSys : MonoBehaviour {
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (currTarget == null && other.gameObject.layer == 9 && buildingData._isTimeclear)
+        if (currTarget == null && other.gameObject.tag == "ENEMY" && buildingData._isTimeclear)
         {
             currTarget = other.gameObject;
-            MonsStats = currTarget.GetComponent<MonsAI>();
+            if (!currTarget.activeSelf)
+            {
+                currTarget = null;
+            }
         }
     }
 }

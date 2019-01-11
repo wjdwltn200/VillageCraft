@@ -50,10 +50,10 @@ public class animationState : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        //GameObject tempGO = other.gameObject;
-        //if (tempGO.layer == 9)
-        //{
-        //    tempGO.GetComponent<damageSys>().setHpPoint(heroData._atkPoint);
-        //}
+        GameObject tempGO = other.gameObject;
+        if (tempGO.layer == 13)
+        {
+            Destroy(tempGO);
+        }
     }
 }

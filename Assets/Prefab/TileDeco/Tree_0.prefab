@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 33115289938718960}
   - component: {fileID: 23949336188266170}
   - component: {fileID: 65341505017678440}
-  - component: {fileID: 208155207850648754}
-  m_Layer: 10
+  - component: {fileID: 114848351068739850}
+  m_Layer: 13
   m_Name: Tree_0
   m_TagString: TILEDECO
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1146570844403142}
-  m_LocalRotation: {x: 0.662916, y: -0.24605376, z: -0.24605376, w: -0.662916}
+  m_LocalRotation: {x: -0.59503967, y: -0.38200495, z: -0.38200495, w: 0.59503967}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -97,18 +97,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.6, y: 0.5, z: 4.65}
   m_Center: {x: 0, y: 0, z: 2.324604}
---- !u!208 &208155207850648754
-NavMeshObstacle:
+--- !u!114 &114848351068739850
+MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1146570844403142}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.3, y: 0.25, z: 2.325}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 0
-  m_Center: {x: 0, y: 0, z: 2.325}
-  m_TimeToStationary: 0.5
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2df5eef471bbdaf4cb9b92eb9f2f8e20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setTileX: 60
+  setTileZ: 40

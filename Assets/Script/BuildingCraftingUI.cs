@@ -49,14 +49,6 @@ public class BuildingCraftingUI : MonoBehaviour {
 
     public void isUI(GameObject ui) { ui.SetActive(!ui.activeSelf); }
 
-    //public void OnbuildingUI() { try
-    //    {
-    //        OnPlayerUI(false);
-    //        OnMonsterUI(false);
-    //        OnBuildingUI(true);
-    //    }
-    //    catch { }
-    //    }
     public void OnbuildingUI()
     {
         if (OnPlayerUI != null)     OnPlayerUI(false);

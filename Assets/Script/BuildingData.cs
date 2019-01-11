@@ -59,7 +59,6 @@ public class BuildingData : MonoBehaviour {
     {
         setTIleX = setX;
         setTIleZ = setZ;
-        Debug.Log("setTIleX : " + setTIleX + ", " + "setTIleZ : " + setTIleZ);
     }
 
     private void Awake()
@@ -140,12 +139,8 @@ public class BuildingData : MonoBehaviour {
         {
             for (int z = -sizeZ; z < sizeZ + 1; z++)
             {
-                Debug.Log("setTIleZ : " + setTIleZ);
-                Debug.Log("setTIleX : " + setTIleX);
-                Debug.Log("(setTIleZ + z) : " + (setTIleZ + z) + ", " + "(setTIleX + x) : " + (setTIleX + x));
                 tileMapSet.listTileGo[(setTIleZ + z) + (setTIleX + x) * (tileMapSet.tileSizeXY / 2)].isBuilding = false;
                 tileMapSet.listTileGo[(setTIleZ + z) + (setTIleX + x) * (tileMapSet.tileSizeXY / 2)].listGoType = eBuildingType.NULL;
-                Debug.Log("isBuilding : " + tileMapSet.listTileGo[((setTIleZ + z) + (setTIleX + x) * (tileMapSet.tileSizeXY / 2))].isBuilding);
             }
         }
 
